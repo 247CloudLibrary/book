@@ -1,4 +1,4 @@
-package com.cloudlibrary.book.exception;
+package com.cloudlibrary.books.exception;
 
 
 import lombok.Getter;

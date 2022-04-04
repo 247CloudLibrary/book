@@ -1,8 +1,8 @@
-package com.cloudlibrary.book.ui.advice;
+package com.cloudlibrary.books.ui.advice;
 
-import com.cloudlibrary.book.exception.CloudLibraryException;
-import com.cloudlibrary.book.exception.MessageType;
-import com.cloudlibrary.book.ui.view.ApiErrorView;
+import com.cloudlibrary.books.exception.CloudLibraryException;
+import com.cloudlibrary.books.exception.MessageType;
+import com.cloudlibrary.books.ui.view.ApiErrorView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.TypeMismatchException;

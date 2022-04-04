@@ -1,7 +1,7 @@
-package com.cloudlibrary.book.ui.view;
+package com.cloudlibrary.books.ui.view;
 
-import com.cloudlibrary.book.exception.CloudLibraryException;
-import com.cloudlibrary.book.exception.MessageType;
+import com.cloudlibrary.books.exception.CloudLibraryException;
+import com.cloudlibrary.books.exception.MessageType;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.ObjectUtils;
