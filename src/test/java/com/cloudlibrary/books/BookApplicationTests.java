@@ -1,4 +1,4 @@
-package com.cloudlibrary.book;
+package com.cloudlibrary.books;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
