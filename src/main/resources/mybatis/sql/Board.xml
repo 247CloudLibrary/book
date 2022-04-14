@@ -99,4 +99,14 @@
             b.id=#{id}
 
     </select>
+
+
+    <update id="deleteBook" parameterType="Long">
+        UPDATE books
+        SET
+            bookStatus = 'DISCARD',
+            updatedAt = NOW()
+        WHERE id =#{id}
+
+    </update>
 </mapper>
