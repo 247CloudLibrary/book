@@ -7,14 +7,13 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
-
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 public class BookUpdateRequest {
 
-    private Long id;
+
     private String rid;
     private String isbn;
     private String title;
@@ -25,13 +24,12 @@ public class BookUpdateRequest {
     private String contents;
     private String publisher;
     private LocalDate publishDate;
-    private String type;
+    private String bookType;
     private String genre;
     private String barcode;
     private String rfid;
     private String bookStatus;
     private Long categoryId;
-    private Long libraryId;
     private String libraryName;
 
 }

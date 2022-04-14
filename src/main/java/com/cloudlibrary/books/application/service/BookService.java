@@ -3,6 +3,7 @@ package com.cloudlibrary.books.application.service;
 import com.cloudlibrary.books.application.domain.Book;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
+import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase{
         this.bookEntityRepository = bookEntityRepository;
     }
 
-
     @Override
     public List<FindBookResult> getBookAllList() {
 
@@ -39,6 +39,66 @@ public class BookService implements BookReadUseCase,BookOperationUseCase{
 
         return FindBookResult.findByBook(result.get());
     }
+
+
+    @Override
+    public void createBook(BookCreateCommand command) {
+       Book book =  Book.builder()
+                .rid(command.getRid())
+                .isbn(command.getIsbn())
+                .title(command.getTitle())
+                .thumbNailImage(command.getThumbNailImage())
+                .coverImage(command.getCoverImage())
+                .author(command.getAuthor())
+                .translator(command.getTranslator())
+                .contents(command.getContents())
+                .publisher(command.getPublisher())
+                .publishDate(command.getPublishDate())
+                .bookType(command.getBookType())
+                .genre(command.getGenre())
+                .barcode(command.getBarcode())
+                .rfid(command.getRfid())
+                .bookStatus(command.getBookStatus())
+                .categoryId(command.getCategoryId())
+                .libraryName(command.getLibraryName())
+                .build();
+
+        bookEntityRepository.saveBook(new BookEntity(book));
+    }
+
+    @Override
+    public Long updateBook(BookUpdateCommand command) {
+
+        Optional<Book> findBook = bookEntityRepository.findBookById(command.getId());
+
+        if (findBook.isEmpty()) {
+            throw new CloudLibraryException(MessageType.NOT_FOUND);
+        }
+
+        Book book =  Book.builder()
+                .id(command.getId())
+                .rid(command.getRid())
+                .isbn(command.getIsbn())
+                .title(command.getTitle())
+                .thumbNailImage(command.getThumbNailImage())
+                .coverImage(command.getCoverImage())
+                .author(command.getAuthor())
+                .translator(command.getTranslator())
+                .contents(command.getContents())
+                .publisher(command.getPublisher())
+                .publishDate(command.getPublishDate())
+                .bookType(command.getBookType())
+                .genre(command.getGenre())
+                .barcode(command.getBarcode())
+                .rfid(command.getRfid())
+                .bookStatus(command.getBookStatus())
+                .categoryId(command.getCategoryId())
+                .libraryName(command.getLibraryName())
+                .build();
+
+        return bookEntityRepository.updateBook(new BookEntity(book));
+    }
+
 
     @Override
     public void deleteBook(BookDeleteCommand command) {
