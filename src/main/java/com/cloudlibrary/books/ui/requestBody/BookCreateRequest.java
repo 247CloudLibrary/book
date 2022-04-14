@@ -30,7 +30,7 @@ public class BookCreateRequest {
     private String barcode;
     private String rfid;
     private String bookStatus;
-    private Long category;
+    private Long categoryId;
     private Long libraryId;
     private String libraryName;
 

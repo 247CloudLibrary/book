@@ -48,16 +48,11 @@ public class BookCompositeView {
     private String rfid;
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
-    @ApiModelProperty(value="한국십진분류표")
-    private Long category;
+    @ApiModelProperty(value="한국십진분류표 id")
+    private Long categoryId;
     @ApiModelProperty(value="도서관 ID")
     private Long libraryId;
     @ApiModelProperty(value="도서관 이름")
     private String libraryName;
-    @ApiModelProperty(value = "생성시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime createdAt;
-    @ApiModelProperty(value = "수정시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime updatedAt;
+
 }

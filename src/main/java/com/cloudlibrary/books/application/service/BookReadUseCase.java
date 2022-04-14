@@ -21,7 +21,7 @@ public interface BookReadUseCase {
     class BookFindQuery {
         private long bookId;
 
-        public BookFindQuery(long bookId) {
+        public BookFindQuery(Long bookId) {
             this.bookId = bookId;
         }
     }
@@ -51,11 +51,10 @@ public interface BookReadUseCase {
         private final String barcode;
         private final String rfid;
         private final String bookStatus;
-        private final Long libraryId;
         private final String libraryName;
-        private final Long category;
-        private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
+        private final Long categoryId;
+        private final Long code;
+        private final String codeName;
 
         public static FindBookResult findByBook(Book book) {
             return FindBookResult.builder()
@@ -74,11 +73,10 @@ public interface BookReadUseCase {
                     .barcode(book.getBarcode())
                     .rfid(book.getRfid())
                     .bookStatus(book.getBookStatus())
-                    .libraryId(book.getLibraryId())
                     .libraryName(book.getLibraryName())
-                    .category(book.getCategory())
-                    .createdAt(book.getCreatedAt())
-                    .updatedAt(book.getUpdatedAt())
+                    .categoryId(book.getCategoryId())
+                    .code(book.getCode())
+                    .codeName(book.getCodeName())
                     .build();
         }
     }

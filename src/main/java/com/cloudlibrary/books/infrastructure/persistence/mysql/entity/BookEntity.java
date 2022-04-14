@@ -34,9 +34,10 @@ public class BookEntity implements Serializable {
     private String barcode;
     private String rfid;
     private String bookStatus;
-    private Long libraryId;
     private String libraryName;
-    private Long category;
+    private Long categoryId;
+    private Long code;
+    private String codeName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -52,17 +52,13 @@ public class BookView {
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
     @ApiModelProperty(value="한국십진분류표 카테고리 번호")
-    private Long category;
-    @ApiModelProperty(value="도서관 ID")
-    private Long libraryId;
+    private Long categoryId;
     @ApiModelProperty(value="도서관 이름")
     private String libraryName;
-    @ApiModelProperty(value = "생성시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime createdAt;
-    @ApiModelProperty(value = "수정시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime updatedAt;
+    @ApiModelProperty(value="한국십진분류표 코드 번호")
+    private Long code;
+    @ApiModelProperty(value="한국십진분류표 코드 이름")
+    private String codeName;
 
 
     public BookView(BookReadUseCase.FindBookResult result) {
@@ -82,11 +78,11 @@ public class BookView {
         this.barcode = result.getBarcode();
         this.rfid = result.getRfid();
         this.bookStatus = result.getBookStatus();
-        this.category = result.getCategory();
-        this.libraryId = result.getLibraryId();
+        this.categoryId = result.getCategoryId();
+        this.code = result.getCode();
+        this.codeName=result.getCodeName();
         this.libraryName = result.getLibraryName();
-        this.createdAt = result.getCreatedAt();
-        this.updatedAt = result.getUpdatedAt();
+
     }
 }
 
