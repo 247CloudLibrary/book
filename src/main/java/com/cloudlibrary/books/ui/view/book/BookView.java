@@ -1,5 +1,6 @@
 package com.cloudlibrary.books.ui.view.book;
 
+import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,8 +10,10 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+/**
+ * TODO 한국십진분류표 code,codeName 추가하기
+ */
 
-@Builder //추후 삭제
 @Getter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,7 +51,7 @@ public class BookView {
     private String rfid;
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
-    @ApiModelProperty(value="한국십진분류표")
+    @ApiModelProperty(value="한국십진분류표 카테고리 번호")
     private Long category;
     @ApiModelProperty(value="도서관 ID")
     private Long libraryId;
@@ -61,6 +64,30 @@ public class BookView {
     @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime updatedAt;
 
+
+    public BookView(BookReadUseCase.FindBookResult result) {
+        this.id = result.getId();
+        this.rid = result.getRid();
+        this.isbn = result.getIsbn();
+        this.title = result.getTitle();
+        this.thumbNailImage = result.getThumbNailImage();
+        this.coverImage = result.getCoverImage();
+        this.author = result.getAuthor();
+        this.translator = result.getTranslator();
+        this.contents = result.getContents();
+        this.publisher = result.getPublisher();
+        this.publishDate = result.getPublishDate();
+        this.type = result.getBookType();
+        this.genre = result.getGenre();
+        this.barcode = result.getBarcode();
+        this.rfid = result.getRfid();
+        this.bookStatus = result.getBookStatus();
+        this.category = result.getCategory();
+        this.libraryId = result.getLibraryId();
+        this.libraryName = result.getLibraryName();
+        this.createdAt = result.getCreatedAt();
+        this.updatedAt = result.getUpdatedAt();
+    }
 }
 
 
