@@ -13,4 +13,5 @@ public interface BookEntityRepository {
 
     Optional<Book> findBookById(Long bookId);
 
+    void deleteBook(Long bookId);
 }

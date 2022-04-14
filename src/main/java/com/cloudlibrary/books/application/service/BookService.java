@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class BookService implements BookReadUseCase{
+public class BookService implements BookReadUseCase,BookOperationUseCase{
 
     private final BookEntityRepository bookEntityRepository;
 
@@ -38,5 +38,14 @@ public class BookService implements BookReadUseCase{
         }
 
         return FindBookResult.findByBook(result.get());
+    }
+
+    @Override
+    public void deleteBook(BookDeleteCommand command) {
+
+        Book book = bookEntityRepository.findBookById(command.getId())
+                .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        bookEntityRepository.deleteBook(book.getId());
     }
 }
