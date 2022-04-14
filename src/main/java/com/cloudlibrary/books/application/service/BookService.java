@@ -103,5 +103,9 @@ public class BookService implements BookReadUseCase,BookOperationUseCase{
     @Override
     public void deleteBook(BookDeleteCommand command) {
 
+        Book book = bookEntityRepository.findBookById(command.getId())
+                .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        bookEntityRepository.deleteBook(book.getId());
     }
 }

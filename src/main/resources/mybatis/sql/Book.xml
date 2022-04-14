@@ -163,4 +163,14 @@
             updatedAt = NOW()
         WHERE id= #{id}
     </update>
+
+
+    <update id="deleteBook" parameterType="Long">
+        UPDATE books
+        SET
+            bookStatus = 'DISCARD',
+            updatedAt = NOW()
+        WHERE id =#{id}
+
+    </update>
 </mapper>

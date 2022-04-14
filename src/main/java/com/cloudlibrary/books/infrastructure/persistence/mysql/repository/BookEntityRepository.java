@@ -18,4 +18,5 @@ public interface BookEntityRepository {
 
     Long updateBook(BookEntity bookEntity);
 
+    void deleteBook(Long bookId);
 }

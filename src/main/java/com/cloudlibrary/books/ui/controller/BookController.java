@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @Api(value = "도서 API")
@@ -124,10 +125,13 @@ public class BookController {
 
 
     @PatchMapping("/books/{id}")
-    @ApiOperation(value="도서 삭제. bookStatus를 LOST로 변경")
-    public ResponseEntity<ApiResponseView<Long>> deleteBook(@PathVariable("id") Long id){
+    @ApiOperation(value="도서 삭제. bookStatus를 DISCARD로 변경")
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") Long id){
 
-        return ResponseEntity.ok(new ApiResponseView<>(id));
+        var command = BookOperationUseCase.BookDeleteCommand.builder().id(id).build();
+
+        bookOperationUseCase.deleteBook(command);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/composite")
