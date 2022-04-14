@@ -3,7 +3,7 @@ package com.cloudlibrary.books.application.service;
 import com.cloudlibrary.books.application.domain.Book;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
-import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookRepository;
+import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +16,22 @@ import java.util.stream.Collectors;
 @Service
 public class BookService implements BookReadUseCase{
 
-    private final BookRepository bookRepository;
+    private final BookEntityRepository bookEntityRepository;
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public BookService(BookEntityRepository bookEntityRepository) {
+        this.bookEntityRepository = bookEntityRepository;
     }
 
 
     @Override
     public List<FindBookResult> getBookAllList() {
 
-        return bookRepository.findBookAll().stream().map(FindBookResult::findByBook).collect(Collectors.toList());
+        return bookEntityRepository.findBookAll().stream().map(FindBookResult::findByBook).collect(Collectors.toList());
     }
 
     @Override
     public FindBookResult getBook(BookFindQuery query) {
-        Optional<Book> result = bookRepository.findBookById(query.getBookId());
+        Optional<Book> result = bookEntityRepository.findBookById(query.getBookId());
 
         if (result.isEmpty()) {
             throw new CloudLibraryException(MessageType.NOT_FOUND);
