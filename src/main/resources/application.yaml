@@ -1,8 +1,15 @@
 spring:
   profiles:
     active: local
-
-
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/book?serverTimezon=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+      username: root
+      password: root
+      connection-test-query: SELECT NOW() FROM dual
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
 ---
 spring:
   application:
