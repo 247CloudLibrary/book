@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 @Getter
 @ToString
 @Builder
@@ -24,14 +25,14 @@ public class Book {
     private final String contents;
     private final String publisher;
     private final LocalDate publishDate;
-    private final String type;
+    private final String bookType;
     private final String genre;
     private final String barcode;
     private final String rfid;
     private final String bookStatus;
-    private final Long libraryId;
     private final String libraryName;
-    private final Long category;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private final Long categoryId;
+    private final Long code;
+    private final String codeName;
+
 }
