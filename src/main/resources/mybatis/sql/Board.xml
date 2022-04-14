@@ -19,9 +19,8 @@
         ,barcode
         ,rfid
         ,bookStatus
-        ,libraryId
         ,libraryName
-        ,category
+        ,categoryId
         ,createdAt
         ,updatedAt
     </sql>
@@ -36,17 +35,68 @@
 
 
     <select id="findBookAll"  resultType="com.cloudlibrary.books.application.domain.Book">
-            SELECT
-                    b.<include refid="bookColumns"></include>,
-                   c.code, c.codeName
-            FROM
-                books b
-            INNER JOIN
-                category c
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.code,
+            c.codeName
+        FROM
+            books b
+                INNER JOIN
+            category c
             ON
-                c.id = b.category
-            WHERE NOT bookStatus='STOP'
+                c.id = b.categoryId
+        WHERE NOT bookStatus='STOP'
+            ORDER BY title ASC;
     </select>
 
+    <select id="findBookById" parameterType="Long" resultType="com.cloudlibrary.books.application.domain.Book">
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.code,
+            c.codeName
+        FROM
+            books b
+        INNER JOIN
+            category c
+        ON
+            c.id = b.categoryId
+        WHERE NOT bookStatus='STOP'
+        AND
+            b.id=#{id}
 
+    </select>
 </mapper>
