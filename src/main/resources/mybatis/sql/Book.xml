@@ -100,6 +100,70 @@
 
     </select>
 
+    <insert id="saveBook" parameterType="com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity" >
+        INSERT INTO books(
+            rid,
+            isbn,
+            title,
+            thumbNailImage,
+            coverImage,
+            author,
+            translator,
+            contents,
+            publisher,
+            publishDate,
+            bookType,
+            bookStatus,
+            barcode,
+            genre,
+            rfid,
+            libraryName,
+            categoryId
+        ) VALUES (
+                  #{rid}
+                  ,#{isbn}
+                  ,#{title}
+                  ,#{thumbNailImage}
+                  ,#{coverImage}
+                  ,#{author}
+                  ,#{translator}
+                  ,#{contents}
+                  ,#{publisher}
+                  ,#{publishDate}
+                  ,#{bookType}
+                  ,#{bookStatus}
+                  ,#{barcode}
+                  ,#{genre}
+                  ,#{rfid}
+                  ,#{libraryName}
+                  ,#{categoryId}
+       )
+    </insert>
+
+    <update id="updateBook" parameterType="com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity" >
+        UPDATE books
+        SET
+            rid = #{rid},
+            isbn = #{isbn},
+            title = #{title},
+            thumbNailImage = #{thumbNailImage},
+            coverImage = #{coverImage},
+            author = #{author},
+            translator = #{translator},
+            contents = #{contents},
+            publisher = #{publisher},
+            publishDate = #{publishDate},
+            bookType = #{bookType},
+            bookStatus = #{bookStatus},
+            barcode = #{barcode},
+            genre = #{genre},
+            rfid = #{rfid},
+            libraryName = #{libraryName},
+            categoryId = #{categoryId},
+            updatedAt = NOW()
+        WHERE id= #{id}
+    </update>
+
 
     <update id="deleteBook" parameterType="Long">
         UPDATE books
