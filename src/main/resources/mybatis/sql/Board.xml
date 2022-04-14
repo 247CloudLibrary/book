@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository">
+
+    <sql id="bookColumns">
+         id
+        ,rid
+        ,isbn
+        ,title
+        ,thumbNailImage
+        ,coverImage
+        ,author
+        ,translator
+        ,contents
+        ,publisher
+        ,publishDate
+        ,bookType
+        ,genre
+        ,barcode
+        ,rfid
+        ,bookStatus
+        ,libraryName
+        ,categoryId
+        ,createdAt
+        ,updatedAt
+    </sql>
+
+    <sql id="categoryColumns">
+        id
+        ,code
+        ,codeName
+    </sql>
+
+<!--    TODO library table 넣을지 말지 정하기-->
+
+
+    <select id="findBookAll"  resultType="com.cloudlibrary.books.application.domain.Book">
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.code,
+            c.codeName
+        FROM
+            books b
+                INNER JOIN
+            category c
+            ON
+                c.id = b.categoryId
+        WHERE NOT bookStatus='STOP'
+            ORDER BY title ASC;
+    </select>
+
+    <select id="findBookById" parameterType="Long" resultType="com.cloudlibrary.books.application.domain.Book">
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.code,
+            c.codeName
+        FROM
+            books b
+        INNER JOIN
+            category c
+        ON
+            c.id = b.categoryId
+        WHERE NOT bookStatus='STOP'
+        AND
+            b.id=#{id}
+
+    </select>
+</mapper>

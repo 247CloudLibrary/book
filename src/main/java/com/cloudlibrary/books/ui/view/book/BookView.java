@@ -1,5 +1,6 @@
 package com.cloudlibrary.books.ui.view.book;
 
+import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,8 +10,10 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+/**
+ * TODO 한국십진분류표 code,codeName 추가하기
+ */
 
-@Builder //추후 삭제
 @Getter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,19 +51,39 @@ public class BookView {
     private String rfid;
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
-    @ApiModelProperty(value="한국십진분류표")
-    private Long category;
-    @ApiModelProperty(value="도서관 ID")
-    private Long libraryId;
+    @ApiModelProperty(value="한국십진분류표 카테고리 번호")
+    private Long categoryId;
     @ApiModelProperty(value="도서관 이름")
     private String libraryName;
-    @ApiModelProperty(value = "생성시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime createdAt;
-    @ApiModelProperty(value = "수정시간")
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime updatedAt;
+    @ApiModelProperty(value="한국십진분류표 코드 번호")
+    private Long code;
+    @ApiModelProperty(value="한국십진분류표 코드 이름")
+    private String codeName;
 
+
+    public BookView(BookReadUseCase.FindBookResult result) {
+        this.id = result.getId();
+        this.rid = result.getRid();
+        this.isbn = result.getIsbn();
+        this.title = result.getTitle();
+        this.thumbNailImage = result.getThumbNailImage();
+        this.coverImage = result.getCoverImage();
+        this.author = result.getAuthor();
+        this.translator = result.getTranslator();
+        this.contents = result.getContents();
+        this.publisher = result.getPublisher();
+        this.publishDate = result.getPublishDate();
+        this.type = result.getBookType();
+        this.genre = result.getGenre();
+        this.barcode = result.getBarcode();
+        this.rfid = result.getRfid();
+        this.bookStatus = result.getBookStatus();
+        this.categoryId = result.getCategoryId();
+        this.code = result.getCode();
+        this.codeName=result.getCodeName();
+        this.libraryName = result.getLibraryName();
+
+    }
 }
 
 
