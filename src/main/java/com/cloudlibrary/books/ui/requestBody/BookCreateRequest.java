@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BookCreateRequest {
 
-    private String rid;
     private String isbn;
     private String title;
     private String thumbNailImage;
@@ -25,13 +24,12 @@ public class BookCreateRequest {
     private String contents;
     private String publisher;
     private LocalDate publishDate;
-    private String type;
+    private String bookType;
     private String genre;
     private String barcode;
     private String rfid;
     private String bookStatus;
     private Long categoryId;
-    private Long libraryId;
     private String libraryName;
 
 }

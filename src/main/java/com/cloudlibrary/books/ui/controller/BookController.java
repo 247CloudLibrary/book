@@ -3,6 +3,10 @@ package com.cloudlibrary.books.ui.controller;
 
 import com.cloudlibrary.books.application.service.BookOperationUseCase;
 import com.cloudlibrary.books.application.service.BookReadUseCase;
+import com.cloudlibrary.books.exception.CloudLibraryException;
+import com.cloudlibrary.books.exception.MessageType;
+import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookStatusEnum;
+import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookTypeEnum;
 import com.cloudlibrary.books.ui.requestBody.BookCreateRequest;
 import com.cloudlibrary.books.ui.requestBody.BookStatusUpdateRequest;
 import com.cloudlibrary.books.ui.requestBody.BookUpdateRequest;
@@ -13,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,29 +40,38 @@ public class BookController {
 
     @PostMapping("/books")
     @ApiOperation(value = "도서 등록")
-    public ResponseEntity<ApiResponseView<BookView>> createBook(@RequestBody BookCreateRequest request) {
+    public ResponseEntity<Void> createBook(@RequestBody BookCreateRequest request) {
 
-//        BookView mockResult = BookView.builder()
-//                .id(1L)
-//                .rid(request.getLibraryName() + "-" + request.getAuthor() + "-" + request.getTitle() + "_" + 1L)
-//                .isbn("isbnTEST1234")
-//                .title(request.getTitle())
-//                .thumbNailImage(request.getThumbNailImage())
-//                .coverImage(request.getCoverImage())
-//                .author(request.getAuthor())
-//                .translator(request.getTranslator())
-//                .publisher(request.getPublisher())
-//                .publishDate(request.getPublishDate())
-//                .type(request.getType())
-//                .genre(request.getGenre())
-//                .barcode(request.getBarcode())
-//                .rfid(request.getRfid())
-//                .bookStatus(request.getBookStatus())
-//                .category(request.getCategory())
-//                .libraryId(request.getLibraryId())
-//                .libraryName(request.getLibraryName()).build();
-//        return ResponseEntity.ok(new ApiResponseView<>(mockResult));
-        return null;
+        if (ObjectUtils.isEmpty(request)) {
+            throw new CloudLibraryException(MessageType.BAD_REQUEST);
+        }
+
+        /**
+         * TODO rid만들기 library name - author - title - id조합 --> 등록할때 id없음..
+         */
+
+        var command = BookOperationUseCase.BookCreateCommand.builder()
+                .rid(request.getLibraryName()+'-'+request.getTitle()+'-'+request.getAuthor())
+                .isbn(request.getIsbn())
+                .title(request.getTitle())
+                .thumbNailImage(request.getThumbNailImage())
+                .coverImage(request.getCoverImage())
+                .author(request.getAuthor())
+                .translator(request.getTranslator())
+                .contents(request.getContents())
+                .publisher(request.getPublisher())
+                .publishDate(request.getPublishDate())
+                .bookType(BookTypeEnum.valueOf(request.getBookType().toUpperCase()).name())
+                .genre(request.getGenre())
+                .barcode(request.getBarcode())
+                .rfid(request.getRfid())
+                .bookStatus(BookStatusEnum.valueOf(request.getBookStatus().toUpperCase()).name())
+                .categoryId(request.getCategoryId())
+                .libraryName(request.getLibraryName()).build();
+
+        bookOperationUseCase.createBook(command);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/books")
@@ -83,10 +97,30 @@ public class BookController {
 
     @PutMapping("/books/{id}")
     @ApiOperation(value = "도서 수정")
-    public ResponseEntity<ApiResponseView<BookView>> updateBook(@PathVariable("id") Long id, @RequestBody BookUpdateRequest request) {
+    public ResponseEntity<ApiResponseView<Long>> updateBook(@PathVariable("id") Long id, @RequestBody BookUpdateRequest request) {
+      var command = BookOperationUseCase.BookUpdateCommand.builder()
+               .id(id)
+               .rid(request.getRid())
+               .isbn(request.getIsbn())
+               .title(request.getTitle())
+               .thumbNailImage(request.getThumbNailImage())
+               .coverImage(request.getCoverImage())
+               .author(request.getAuthor())
+               .translator(request.getTranslator())
+               .contents(request.getContents())
+               .publisher(request.getPublisher())
+               .publishDate(request.getPublishDate())
+               .bookType(BookTypeEnum.valueOf(request.getBookType().toUpperCase()).name())
+               .genre(request.getGenre())
+               .barcode(request.getBarcode())
+               .rfid(request.getRfid())
+               .bookStatus(BookStatusEnum.valueOf(request.getBookStatus().toUpperCase()).name())
+               .categoryId(request.getCategoryId())
+               .libraryName(request.getLibraryName()).build();
 
+        var result = bookOperationUseCase.updateBook(command);
 
-        return null;
+        return ResponseEntity.ok(new ApiResponseView<>(result));
     }
 
 
