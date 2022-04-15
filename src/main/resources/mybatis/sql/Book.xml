@@ -62,7 +62,7 @@
             category c
             ON
                 c.id = b.categoryId
-        WHERE NOT bookStatus='STOP'
+        WHERE NOT bookStatus='DISCARD'
             ORDER BY title ASC;
     </select>
 
@@ -94,7 +94,7 @@
             category c
         ON
             c.id = b.categoryId
-        WHERE NOT bookStatus='STOP'
+        WHERE NOT bookStatus='DISCARD'
         AND
             b.id=#{id}
 
