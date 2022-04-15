@@ -4,7 +4,6 @@ import com.cloudlibrary.books.application.domain.Book;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookReadUseCase {
@@ -26,11 +25,6 @@ public interface BookReadUseCase {
         }
     }
 
-
-
-    /**
-     * TODO 한국십진분류표 code,codeName 추가하기
-     */
     @Builder
     @Getter
     @ToString
@@ -53,7 +47,7 @@ public interface BookReadUseCase {
         private final String bookStatus;
         private final String libraryName;
         private final Long categoryId;
-        private final Long code;
+        private final Long codeNum;
         private final String codeName;
 
         public static FindBookResult findByBook(Book book) {
@@ -75,7 +69,7 @@ public interface BookReadUseCase {
                     .bookStatus(book.getBookStatus())
                     .libraryName(book.getLibraryName())
                     .categoryId(book.getCategoryId())
-                    .code(book.getCode())
+                    .codeNum(book.getCodeNum())
                     .codeName(book.getCodeName())
                     .build();
         }

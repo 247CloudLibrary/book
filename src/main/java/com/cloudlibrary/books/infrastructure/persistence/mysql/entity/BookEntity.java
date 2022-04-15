@@ -34,8 +34,6 @@ public class BookEntity implements Serializable {
     private String bookStatus;
     private String libraryName;
     private Long categoryId;
-    private Long code;
-    private String codeName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -59,8 +57,6 @@ public class BookEntity implements Serializable {
                 .bookStatus(this.bookStatus)
                 .libraryName(this.libraryName)
                 .categoryId(this.categoryId)
-                .code(this.code)
-                .codeName(this.codeName)
                 .build();
     }
 
@@ -83,8 +79,5 @@ public class BookEntity implements Serializable {
         this.bookStatus = book.getBookStatus();
         this.libraryName = book.getLibraryName();
         this.categoryId = book.getCategoryId();
-        this.code =book.getCode();
-        this.codeName =book.getCodeName();
     }
-
 }

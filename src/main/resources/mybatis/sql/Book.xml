@@ -54,7 +54,7 @@
             b.rfid,
             b.libraryName,
             b.categoryId,
-            c.code,
+            c.codeNum,
             c.codeName
         FROM
             books b
@@ -86,7 +86,7 @@
             b.rfid,
             b.libraryName,
             b.categoryId,
-            c.code,
+            c.codeNum,
             c.codeName
         FROM
             books b
@@ -102,23 +102,23 @@
 
     <insert id="saveBook" parameterType="com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity" >
         INSERT INTO books(
-            rid,
-            isbn,
-            title,
-            thumbNailImage,
-            coverImage,
-            author,
-            translator,
-            contents,
-            publisher,
-            publishDate,
-            bookType,
-            bookStatus,
-            barcode,
-            genre,
-            rfid,
-            libraryName,
-            categoryId
+            rid
+            ,isbn
+            ,title
+            ,thumbNailImage
+            ,coverImage
+            ,author
+            ,translator
+            ,contents
+            ,publisher
+            ,publishDate
+            ,bookType
+            ,barcode
+            ,genre
+            ,bookStatus
+            ,rfid
+            ,categoryId
+            ,libraryName
         ) VALUES (
                   #{rid}
                   ,#{isbn}
@@ -131,12 +131,12 @@
                   ,#{publisher}
                   ,#{publishDate}
                   ,#{bookType}
-                  ,#{bookStatus}
                   ,#{barcode}
                   ,#{genre}
+                  ,#{bookStatus}
                   ,#{rfid}
-                  ,#{libraryName}
                   ,#{categoryId}
+                  ,#{libraryName}
        )
     </insert>
 

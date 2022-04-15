@@ -10,9 +10,6 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-/**
- * TODO 한국십진분류표 code,codeName 추가하기
- */
 
 @Getter
 @ToString
@@ -42,7 +39,7 @@ public class BookView {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishDate;
     @ApiModelProperty(value="자료 종류")
-    private String type;
+    private String BookType;
     @ApiModelProperty(value="도서 장르")
     private String genre;
     @ApiModelProperty(value="도서 바코드")
@@ -51,15 +48,12 @@ public class BookView {
     private String rfid;
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
-    @ApiModelProperty(value="한국십진분류표 카테고리 번호")
-    private Long categoryId;
     @ApiModelProperty(value="도서관 이름")
     private String libraryName;
-    @ApiModelProperty(value="한국십진분류표 코드 번호")
-    private Long code;
-    @ApiModelProperty(value="한국십진분류표 코드 이름")
-    private String codeName;
-
+    @ApiModelProperty(value="카테고리 인덱스")
+    private Long categoryId;
+    @ApiModelProperty(value="카테고리(한국십진분류표) 코드 번호와 코드 내용")
+    private String category;
 
     public BookView(BookReadUseCase.FindBookResult result) {
         this.id = result.getId();
@@ -73,15 +67,14 @@ public class BookView {
         this.contents = result.getContents();
         this.publisher = result.getPublisher();
         this.publishDate = result.getPublishDate();
-        this.type = result.getBookType();
+        this.BookType = result.getBookType();
         this.genre = result.getGenre();
         this.barcode = result.getBarcode();
         this.rfid = result.getRfid();
         this.bookStatus = result.getBookStatus();
-        this.categoryId = result.getCategoryId();
-        this.code = result.getCode();
-        this.codeName=result.getCodeName();
         this.libraryName = result.getLibraryName();
+        this.categoryId = result.getCategoryId();
+        this.category = result.getCodeName() +'('+ result.getCodeNum()+')';
 
     }
 }
