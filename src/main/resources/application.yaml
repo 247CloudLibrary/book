@@ -12,6 +12,18 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
+feign:
+  client:
+    config:
+      default:
+        connectTimout: 100
+        readTimeout: 1000
+        loggerLevel: HEADERS
+  composite-api:
+    url: https://www.cloudlibrary.shop/v1
+
+logging:
+  level: debug
 ---
 spring:
   application:
