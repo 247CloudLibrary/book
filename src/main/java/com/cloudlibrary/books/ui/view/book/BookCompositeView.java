@@ -48,10 +48,8 @@ public class BookCompositeView {
     private String rfid;
     @ApiModelProperty(value="도서 상태")
     private String bookStatus;
-    @ApiModelProperty(value="한국십진분류표 id")
-    private Long categoryId;
-    @ApiModelProperty(value="도서관 ID")
-    private Long libraryId;
+    @ApiModelProperty(value="한국십진분류표 카테고리")
+    private String category;
     @ApiModelProperty(value="도서관 이름")
     private String libraryName;
 

@@ -1,43 +1,79 @@
 package com.cloudlibrary.books.infrastructure.persistence.mysql.entity;
 
 
-import com.cloudlibrary.books.application.domain.Book;
+import com.cloudlibrary.books.application.domain.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class BookEntity implements Serializable {
+@Entity
+@Table(name = "book")
+public class BookEntity extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String rid;
+
+    @Column(nullable = false)
     private String isbn;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String thumbNailImage;
+
+    @Column(nullable = false)
     private String coverImage;
+
+    @Column(nullable = false)
     private String author;
+
     private String translator;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String contents;
+
+    @Column(nullable = false)
     private String publisher;
+
     private LocalDate publishDate;
-    private String bookType;
-    private String genre;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BookType bookType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BookGenre genre;
+
+    @Column(nullable = false)
     private String barcode;
+
     private String rfid;
-    private String bookStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BookStatus bookStatus;
+
+    @Column(nullable = false)
     private String libraryName;
-    private Long categoryId;
-    private Long code;
-    private String codeName;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category;
+
 
     public Book toBook() {
         return Book.builder()
@@ -52,15 +88,15 @@ public class BookEntity implements Serializable {
                 .contents(this.contents)
                 .publisher(this.publisher)
                 .publishDate(this.publishDate)
-                .bookType(this.bookType)
-                .genre(this.genre)
+                .bookType(this.bookType.getType())
+                .genre(this.genre.getGenre())
                 .barcode(this.barcode)
                 .rfid(this.rfid)
-                .bookStatus(this.bookStatus)
+                .bookStatus(this.bookStatus.getStatus())
                 .libraryName(this.libraryName)
-                .categoryId(this.categoryId)
-                .code(this.code)
-                .codeName(this.codeName)
+                .category(this.category.toString())
+                .createdAt(super.getCreatedAt())
+                .updatedAt(super.getUpdatedAt())
                 .build();
     }
 
@@ -76,15 +112,12 @@ public class BookEntity implements Serializable {
         this.contents = book.getContents();
         this.publisher = book.getPublisher();
         this.publishDate = book.getPublishDate();
-        this.bookType = book.getBookType();
-        this.genre = book.getGenre();
+        this.bookType = BookType.find(book.getBookType());
+        this.genre = BookGenre.find(book.getGenre());
         this.barcode = book.getBarcode();
         this.rfid = book.getRfid();
-        this.bookStatus = book.getBookStatus();
+        this.category = Category.find(book.getCategory());
+        this.bookStatus = BookStatus.find(book.getBookStatus());
         this.libraryName = book.getLibraryName();
-        this.categoryId = book.getCategoryId();
-        this.code =book.getCode();
-        this.codeName =book.getCodeName();
     }
-
 }

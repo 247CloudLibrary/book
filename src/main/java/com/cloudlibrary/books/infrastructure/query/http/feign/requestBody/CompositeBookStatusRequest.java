@@ -1,4 +1,4 @@
-package com.cloudlibrary.books.ui.requestBody;
+package com.cloudlibrary.books.infrastructure.query.http.feign.requestBody;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,6 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class BookStatusUpdateRequest {
+public class CompositeBookStatusRequest {
     private String bookStatus;
 }
