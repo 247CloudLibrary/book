@@ -14,8 +14,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - chmod +x gradlew
-      - ./gradlew bootBuildImage --imageName=${IMAGE_NAME}
+      - docker build -t ${IMAGE_NAME}:v${CODEBUILD_BUILD_NUMBER} .
       - docker tag ${IMAGE_NAME}:latest ${ECR_REPOSITORY_URI}/${IMAGE_NAME}:v${CODEBUILD_BUILD_NUMBER}
   post_build:
     commands:
