@@ -1,22 +1,12 @@
 package com.cloudlibrary.books.infrastructure.persistence.mysql.repository;
 
-import com.cloudlibrary.books.application.domain.Book;
+import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface BookEntityRepository {
+public interface BookEntityRepository extends JpaRepository<BookEntity,Long> {
 
-    List<Book> findBookAll();
-
-    Optional<Book> findBookById(Long bookId);
-
-    void saveBook(BookEntity bookEntity);
-
-    Long updateBook(BookEntity bookEntity);
-
-    void deleteBook(Long bookId);
 }
