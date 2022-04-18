@@ -31,8 +31,8 @@ public class Book {
     private final String rfid;
     private final String bookStatus;
     private final String libraryName;
-    private final Long categoryId;
-    private final Long code;
-    private final String codeName;
+    private final String category;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
 }
