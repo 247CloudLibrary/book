@@ -21,9 +21,11 @@ feign:
         loggerLevel: HEADERS
   composite-api:
     url: https://www.cloudlibrary.shop/v1
-
 logging:
-  level: debug
+  level:
+    root: info
+    com.cloudlibrary.books: debug
+
 ---
 spring:
   application:
