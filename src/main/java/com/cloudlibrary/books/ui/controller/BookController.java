@@ -38,6 +38,11 @@ public class BookController {
         this.bookOperationUseCase = bookOperationUseCase;
     }
 
+    @GetMapping("/health-check")
+    public ResponseEntity<String> healthCheck(){
+        return ResponseEntity.ok("good");
+    }
+
     @PostMapping("/books")
     @ApiOperation(value = "도서 등록")
     public ResponseEntity<Void> createBook(@RequestBody BookCreateRequest request) {
