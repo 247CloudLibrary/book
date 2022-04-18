@@ -1,6 +1,8 @@
 package com.cloudlibrary.books.application.service;
 
 import com.cloudlibrary.books.application.domain.Book;
+import com.cloudlibrary.books.exception.CloudLibraryException;
+import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
 import com.cloudlibrary.books.infrastructure.query.http.feign.client.CompositeRequestClient;
@@ -49,13 +51,17 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
                 .libraryName(command.getLibraryName())
                 .build();
 
-
         BookEntity save = bookEntityRepository.save(new BookEntity(book));
+        //TODO Composite에 보내기
 
     }
 
     @Override
+    @Transactional
     public Long updateBook(BookUpdateCommand command) {
+        bookEntityRepository.findById(command.getId()).stream().findAny().orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        //TODO Composite에 보내기
         return null;
     }
 

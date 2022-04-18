@@ -14,8 +14,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - ./gradlew board:bootBuildImage --imageName=${IMAGE_NAME}
-      - docker tag ${IMAGE_NAME}:v${CODEBUILD_BUILD_NUMBER} ${ECR_REPOSITORY_URI}/${IMAGE_NAME}:v${CODEBUILD_BUILD_NUMBER}
+      - ./gradlew bootBuildImage --imageName=${IMAGE_NAME}
+      - docker tag ${IMAGE_NAME}:latest ${ECR_REPOSITORY_URI}/${IMAGE_NAME}:v${CODEBUILD_BUILD_NUMBER}
   post_build:
     commands:
       - echo Build completed on `date`
@@ -27,3 +27,5 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
+    - taskdef.json
+    - appspec.yaml
