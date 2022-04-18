@@ -16,5 +16,6 @@
   ],
   "networkMode": "bridge",
   "cpu": "512",
+  "memory": "400",
   "family": "book-task"
 }
