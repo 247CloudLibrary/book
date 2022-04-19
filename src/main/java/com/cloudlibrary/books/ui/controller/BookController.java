@@ -126,11 +126,11 @@ public class BookController {
                .contents(request.getContents())
                .publisher(request.getPublisher())
                .publishDate(request.getPublishDate())
-               .bookType(BookType.valueOf(request.getBookType().toUpperCase()).name())
+               .bookType(request.getBookType())
                .genre(request.getGenre())
                .barcode(request.getBarcode())
                .rfid(request.getRfid())
-               .bookStatus(BookStatus.valueOf(request.getBookStatus().toUpperCase()).name())
+               .bookStatus(request.getBookStatus())
                .category(request.getCategory())
                .libraryName(request.getLibraryName()).build();
 
