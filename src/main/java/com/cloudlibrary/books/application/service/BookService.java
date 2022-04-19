@@ -5,8 +5,6 @@ import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
-import com.cloudlibrary.books.infrastructure.query.http.feign.client.CompositeRequestClient;
-import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,17 +56,47 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     }
 
+    /**
+     * findBookEntity.update => 도서 수정
+     *
+     */
     @Override
     @Transactional
     public Long updateBook(BookUpdateCommand command) {
-        bookEntityRepository.findById(command.getId()).stream().findAny().orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
 
-        //TODO Composite에 보내기
-        return null;
+        BookEntity findBookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
+                .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        Book updateBook =  Book.builder()
+                .id(command.getId())
+                .rid(command.getRid())
+                .isbn(command.getIsbn())
+                .title(command.getTitle())
+                .thumbNailImage(command.getThumbNailImage())
+                .coverImage(command.getCoverImage())
+                .author(command.getAuthor())
+                .translator(command.getTranslator())
+                .contents(command.getContents())
+                .publisher(command.getPublisher())
+                .publishDate(command.getPublishDate())
+                .bookType(command.getBookType())
+                .genre(command.getGenre())
+                .barcode(command.getBarcode())
+                .rfid(command.getRfid())
+                .bookStatus(command.getBookStatus())
+                .category(command.getCategory())
+                .libraryName(command.getLibraryName())
+                .build();
+
+       findBookEntity.update(updateBook);
+
+        //TODO 수정한 데이터 Composite에 보내기
+        Book result = findBookEntity.toBook();
+
+        return result.getId();
     }
 
-
-
+    //TODO GET할때 BOOK STATUS가 DISCARD인거 제외하고 가져오기
     @Override
     @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
@@ -77,6 +105,8 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         return findAllBook.stream().map(FindBookResult::findByBook).collect(Collectors.toList());
     }
 
+
+    //TODO GET할때 BOOK STATUS가 DISCARD인거 제외하고 가져오기
     @Override
     public FindBookResult getBook(BookFindQuery query) {
         Optional<BookEntity> result= bookEntityRepository.findById(query.getBookId()).stream().findAny();
@@ -84,6 +114,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         if (result.isEmpty()) {
             throw new CloudLibraryException(MessageType.NOT_FOUND);
         }
+
 
         return FindBookResult.findByBook(result.get().toBook());
 
