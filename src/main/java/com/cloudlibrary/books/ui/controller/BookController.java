@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @Api(value = "도서 API")
-@RequestMapping("/v1")
+@RequestMapping("/v1/books")
 public class BookController {
 
     private final BookReadUseCase bookReadUseCase;
@@ -43,7 +43,7 @@ public class BookController {
         return ResponseEntity.ok("good");
     }
 
-    @PostMapping("/books")
+    @PostMapping("")
     @ApiOperation(value = "도서 등록")
     public ResponseEntity<Void> createBook(@RequestBody BookCreateRequest request) {
 
@@ -90,7 +90,7 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/books")
+    @GetMapping("")
     @ApiOperation(value = "도서 목록 조회")
     public ResponseEntity<ApiResponseView<List<BookView>>> getBooksAll() {
 
@@ -99,7 +99,7 @@ public class BookController {
         return ResponseEntity.ok(new ApiResponseView<>(results.stream().map(BookView::new).collect(Collectors.toList())));
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "도서 상세 조회")
     public ResponseEntity<ApiResponseView<BookView>> getBook(@PathVariable("id") Long id) {
 
@@ -111,7 +111,7 @@ public class BookController {
     }
 
 
-    @PutMapping("/books/{id}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "도서 수정")
     public ResponseEntity<ApiResponseView<Long>> updateBook(@PathVariable("id") Long id, @RequestBody BookUpdateRequest request) {
       var command = BookOperationUseCase.BookUpdateCommand.builder()
@@ -140,7 +140,7 @@ public class BookController {
     }
 
 
-    @PatchMapping("/books/{id}")
+    @PatchMapping("/{id}")
     @ApiOperation(value="도서 삭제. bookStatus를 DISCARD로 변경")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Long id){
 

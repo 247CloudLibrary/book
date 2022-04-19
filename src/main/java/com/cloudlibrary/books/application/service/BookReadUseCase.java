@@ -61,6 +61,7 @@ public interface BookReadUseCase {
                     .translator(book.getTranslator())
                     .contents(book.getContents())
                     .publisher(book.getPublisher())
+                    .publishDate(book.getPublishDate())
                     .bookType(book.getBookType())
                     .genre(book.getGenre())
                     .barcode(book.getBarcode())
