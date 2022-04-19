@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:us-east-1:844148244640:task-definition/book-task:27"
+        TaskDefinition: "arn:aws:ecs:us-east-1:844148244640:task-definition/book-task"
         LoadBalancerInfo:
           ContainerName: "book-container"
           ContainerPort: 8080
