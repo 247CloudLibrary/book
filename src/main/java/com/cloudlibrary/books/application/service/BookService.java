@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -66,10 +67,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         return null;
     }
 
-    @Override
-    public void deleteBook(BookDeleteCommand command) {
 
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -81,6 +79,21 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     @Override
     public FindBookResult getBook(BookFindQuery query) {
-        return null;
+        Optional<BookEntity> result= bookEntityRepository.findById(query.getBookId()).stream().findAny();
+
+        if (result.isEmpty()) {
+            throw new CloudLibraryException(MessageType.NOT_FOUND);
+        }
+
+        return FindBookResult.findByBook(result.get().toBook());
+
+
+    }
+
+
+
+    @Override
+    public void deleteBook(BookDeleteCommand command) {
+
     }
 }
