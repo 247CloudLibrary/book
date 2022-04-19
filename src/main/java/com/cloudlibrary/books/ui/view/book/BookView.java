@@ -4,15 +4,10 @@ import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-/**
- * TODO 한국십진분류표 code,codeName 추가하기
- */
 
 @Getter
 @ToString
@@ -39,7 +34,7 @@ public class BookView {
     @ApiModelProperty(value = "출판사")
     private final String publisher;
     @ApiModelProperty(value="출판일자")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     private final LocalDate publishDate;
     @ApiModelProperty(value="자료 종류")
     private final String type;

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -65,18 +67,33 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         return null;
     }
 
-    @Override
-    public void deleteBook(BookDeleteCommand command) {
 
-    }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
-        return null;
+        List<Book> findAllBook = bookEntityRepository.findAll().stream().map(BookEntity::toBook).collect(Collectors.toList());
+
+        return findAllBook.stream().map(FindBookResult::findByBook).collect(Collectors.toList());
     }
 
     @Override
     public FindBookResult getBook(BookFindQuery query) {
-        return null;
+        Optional<BookEntity> result= bookEntityRepository.findById(query.getBookId()).stream().findAny();
+
+        if (result.isEmpty()) {
+            throw new CloudLibraryException(MessageType.NOT_FOUND);
+        }
+
+        return FindBookResult.findByBook(result.get().toBook());
+
+
+    }
+
+
+
+    @Override
+    public void deleteBook(BookDeleteCommand command) {
+
     }
 }
