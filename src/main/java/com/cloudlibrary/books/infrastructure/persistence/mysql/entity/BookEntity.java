@@ -94,7 +94,7 @@ public class BookEntity extends BaseTimeEntity {
                 .rfid(this.rfid)
                 .bookStatus(this.bookStatus.getStatus())
                 .libraryName(this.libraryName)
-                .category(this.category.toString())
+                .category(Category.CodeAndValue(this.category))
                 .createdAt(super.getCreatedAt())
                 .updatedAt(super.getUpdatedAt())
                 .build();
@@ -116,8 +116,33 @@ public class BookEntity extends BaseTimeEntity {
         this.genre = BookGenre.find(book.getGenre());
         this.barcode = book.getBarcode();
         this.rfid = book.getRfid();
-        this.category = Category.find(book.getCategory());
+        this.category = Category.findCategory(book.getCategory());
         this.bookStatus = BookStatus.find(book.getBookStatus());
         this.libraryName = book.getLibraryName();
+    }
+
+    /**
+     * 게시글 수정
+     */
+    public void update(Book book) {
+        this.id = book.getId();
+        this.rid = book.getRid();
+        this.isbn =book.getIsbn();
+        this.title= book.getTitle();
+        this.thumbNailImage=book.getThumbNailImage();
+        this.coverImage = book.getCoverImage();
+        this.author = book.getAuthor();
+        this.translator = book.getTranslator();
+        this.contents = book.getContents();
+        this.publisher = book.getPublisher();
+        this.publishDate = book.getPublishDate();
+        this.bookType = BookType.find(book.getBookType());
+        this.genre = BookGenre.find(book.getGenre());
+        this.barcode = book.getBarcode();
+        this.rfid = book.getRfid();
+        this.category = Category.findCategory(book.getCategory());
+        this.bookStatus = BookStatus.find(book.getBookStatus());
+        this.libraryName = book.getLibraryName();
+
     }
 }
