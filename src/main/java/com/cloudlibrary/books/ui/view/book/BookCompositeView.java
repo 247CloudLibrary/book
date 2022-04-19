@@ -8,9 +8,8 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-@Builder //추후 삭제
+
 @Getter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,7 +35,7 @@ public class BookCompositeView {
     @ApiModelProperty(value = "출판사")
     private String publisher;
     @ApiModelProperty(value="출판일자")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
     private LocalDate publishDate;
     @ApiModelProperty(value="자료 종류")
     private String type;
