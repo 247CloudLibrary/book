@@ -1,7 +1,5 @@
 package com.cloudlibrary.books.application.domain;
 
-import org.springframework.util.ObjectUtils;
-
 public enum Category{
 
     GENERAL(0, "총류"),
@@ -31,7 +29,7 @@ public enum Category{
         return value;
     }
 
-    public static Category find(String value) {
+    public static Category findCategory(String value) {
 
         for (Category category : Category.values()) {
             if (category.getValue().equals(value)) {
@@ -39,5 +37,10 @@ public enum Category{
             }
         }
         return null;
-        }
     }
+
+    public static String CodeAndValue(Category category){
+        return category.getValue()+"("+category.getCode()+")";
+    }
+
+}

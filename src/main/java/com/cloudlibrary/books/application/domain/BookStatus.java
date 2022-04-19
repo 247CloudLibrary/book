@@ -3,12 +3,7 @@ package com.cloudlibrary.books.application.domain;
 
 import org.springframework.util.ObjectUtils;
 
-/**
- *   AVAILABLE: 대여 가능
- *   STORAGE: 창고 보관
- *   LOST: 분실
- *   DISCARD: 폐기
- */
+
 public enum BookStatus {
     AVAILABLE("대여가능")
     ,STORAGE("창고보관")

@@ -5,11 +5,6 @@ import com.cloudlibrary.books.exception.MessageType;
 import lombok.Setter;
 import org.springframework.util.ObjectUtils;
 
-/**
- * BOOK: 도서
- * NON_BOOK: 비도서
- */
-
 
 public enum BookType {
     BOOK("도서")
