@@ -1,6 +1,7 @@
 package com.cloudlibrary.books.application.service;
 
 import com.cloudlibrary.books.application.domain.Book;
+import com.cloudlibrary.books.application.domain.BookStatus;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
@@ -108,6 +109,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     //TODO GET할때 BOOK STATUS가 DISCARD인거 제외하고 가져오기
     @Override
+    @Transactional(readOnly = true)
     public FindBookResult getBook(BookFindQuery query) {
         Optional<BookEntity> result= bookEntityRepository.findById(query.getBookId()).stream().findAny();
 
@@ -121,10 +123,13 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     }
 
-
-
     @Override
+    @Transactional
     public void deleteBook(BookDeleteCommand command) {
+        BookEntity bookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
+                .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        bookEntity.changeStatus(BookStatus.DISCARD);
 
     }
 }

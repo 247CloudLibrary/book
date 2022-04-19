@@ -122,7 +122,7 @@ public class BookEntity extends BaseTimeEntity {
     }
 
     /**
-     * 게시글 수정
+     * 도서 수정
      */
     public void update(Book book) {
         this.id = book.getId();
@@ -144,5 +144,13 @@ public class BookEntity extends BaseTimeEntity {
         this.bookStatus = BookStatus.find(book.getBookStatus());
         this.libraryName = book.getLibraryName();
 
+    }
+
+    /**
+     * 도서 삭제
+     */
+
+    public void changeStatus(BookStatus status) {
+        this.bookStatus = status;
     }
 }
