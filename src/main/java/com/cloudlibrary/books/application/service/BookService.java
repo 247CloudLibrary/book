@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -71,8 +72,11 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
-        return null;
+        List<Book> findAllBook = bookEntityRepository.findAll().stream().map(BookEntity::toBook).collect(Collectors.toList());
+
+        return findAllBook.stream().map(FindBookResult::findByBook).collect(Collectors.toList());
     }
 
     @Override
