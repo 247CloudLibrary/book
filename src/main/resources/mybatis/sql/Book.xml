@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository">
+
+    <sql id="bookColumns">
+         id
+        ,rid
+        ,isbn
+        ,title
+        ,thumbNailImage
+        ,coverImage
+        ,author
+        ,translator
+        ,contents
+        ,publisher
+        ,publishDate
+        ,bookType
+        ,genre
+        ,barcode
+        ,rfid
+        ,bookStatus
+        ,libraryName
+        ,categoryId
+        ,createdAt
+        ,updatedAt
+    </sql>
+
+    <sql id="categoryColumns">
+        id
+        ,code
+        ,codeName
+    </sql>
+
+<!--    TODO library table 넣을지 말지 정하기-->
+
+
+    <select id="findBookAll"  resultType="com.cloudlibrary.books.application.domain.Book">
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.codeNum,
+            c.codeName
+        FROM
+            books b
+                INNER JOIN
+            category c
+            ON
+                c.id = b.categoryId
+        WHERE NOT bookStatus='DISCARD'
+            ORDER BY title ASC;
+    </select>
+
+    <select id="findBookById" parameterType="Long" resultType="com.cloudlibrary.books.application.domain.Book">
+        SELECT
+            b.id,
+            b.rid,
+            b.isbn,
+            b.title,
+            b.thumbNailImage,
+            b.coverImage,
+            b.author,
+            b.translator,
+            b.contents,
+            b.publisher,
+            b.publishDate,
+            b.bookType,
+            b.bookStatus,
+            b.barcode,
+            b.genre,
+            b.rfid,
+            b.libraryName,
+            b.categoryId,
+            c.codeNum,
+            c.codeName
+        FROM
+            books b
+        INNER JOIN
+            category c
+        ON
+            c.id = b.categoryId
+        WHERE NOT bookStatus='DISCARD'
+        AND
+            b.id=#{id}
+
+    </select>
+
+    <insert id="saveBook" parameterType="com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity" >
+        INSERT INTO books(
+            rid
+            ,isbn
+            ,title
+            ,thumbNailImage
+            ,coverImage
+            ,author
+            ,translator
+            ,contents
+            ,publisher
+            ,publishDate
+            ,bookType
+            ,barcode
+            ,genre
+            ,bookStatus
+            ,rfid
+            ,categoryId
+            ,libraryName
+        ) VALUES (
+                  #{rid}
+                  ,#{isbn}
+                  ,#{title}
+                  ,#{thumbNailImage}
+                  ,#{coverImage}
+                  ,#{author}
+                  ,#{translator}
+                  ,#{contents}
+                  ,#{publisher}
+                  ,#{publishDate}
+                  ,#{bookType}
+                  ,#{barcode}
+                  ,#{genre}
+                  ,#{bookStatus}
+                  ,#{rfid}
+                  ,#{categoryId}
+                  ,#{libraryName}
+       )
+    </insert>
+
+    <update id="updateBook" parameterType="com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity" >
+        UPDATE books
+        SET
+            rid = #{rid},
+            isbn = #{isbn},
+            title = #{title},
+            thumbNailImage = #{thumbNailImage},
+            coverImage = #{coverImage},
+            author = #{author},
+            translator = #{translator},
+            contents = #{contents},
+            publisher = #{publisher},
+            publishDate = #{publishDate},
+            bookType = #{bookType},
+            bookStatus = #{bookStatus},
+            barcode = #{barcode},
+            genre = #{genre},
+            rfid = #{rfid},
+            libraryName = #{libraryName},
+            categoryId = #{categoryId},
+            updatedAt = NOW()
+        WHERE id= #{id}
+    </update>
+
+
+    <update id="deleteBook" parameterType="Long">
+        UPDATE books
+        SET
+            bookStatus = 'DISCARD',
+            updatedAt = NOW()
+        WHERE id =#{id}
+
+    </update>
+</mapper>
