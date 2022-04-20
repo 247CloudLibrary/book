@@ -97,21 +97,24 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         return result.getId();
     }
 
-    //TODO GET할때 BOOK STATUS가 DISCARD인거 제외하고 가져오기
     @Override
     @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
-        List<Book> findAllBook = bookEntityRepository.findAll().stream().map(BookEntity::toBook).collect(Collectors.toList());
+
+        List<Book> findAllBook = bookEntityRepository.findAllBookByBookStatusNot(BookStatus.DISCARD)
+                                    .stream().map(BookEntity::toBook)
+                                    .collect(Collectors.toList());
 
         return findAllBook.stream().map(FindBookResult::findByBook).collect(Collectors.toList());
+
     }
 
 
-    //TODO GET할때 BOOK STATUS가 DISCARD인거 제외하고 가져오기
+
     @Override
     @Transactional(readOnly = true)
     public FindBookResult getBook(BookFindQuery query) {
-        Optional<BookEntity> result= bookEntityRepository.findById(query.getBookId()).stream().findAny();
+        Optional<BookEntity> result= bookEntityRepository.findByIdAndBookStatusNot(query.getBookId(),BookStatus.DISCARD).stream().findAny();
 
         if (result.isEmpty()) {
             throw new CloudLibraryException(MessageType.NOT_FOUND);
@@ -119,7 +122,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
 
         return FindBookResult.findByBook(result.get().toBook());
-
 
     }
 

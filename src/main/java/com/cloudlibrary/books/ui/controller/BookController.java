@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class BookController {
 
     @PostMapping("")
     @ApiOperation(value = "도서 등록")
-    public ResponseEntity<Void> createBook(@RequestBody BookCreateRequest request) {
+    public ResponseEntity<Void> createBook(@Valid @RequestBody BookCreateRequest request) {
 
         if (ObjectUtils.isEmpty(request)) {
             throw new CloudLibraryException(MessageType.BAD_REQUEST);
@@ -109,7 +110,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "도서 수정")
-    public ResponseEntity<ApiResponseView<Long>> updateBook(@PathVariable("id") Long id, @RequestBody BookUpdateRequest request) {
+    public ResponseEntity<ApiResponseView<Long>> updateBook(@Valid @PathVariable("id") Long id, @Valid @RequestBody BookUpdateRequest request) {
       var command = BookOperationUseCase.BookUpdateCommand.builder()
                .id(id)
                .rid(request.getRid())
