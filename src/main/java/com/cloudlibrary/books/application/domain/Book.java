@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -30,8 +31,8 @@ public class Book {
     private final String rfid;
     private final String bookStatus;
     private final String libraryName;
-    private final Long categoryId;
-    private final Long codeNum;
-    private final String codeName;
+    private final String category;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
 }

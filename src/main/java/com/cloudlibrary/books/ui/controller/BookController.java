@@ -5,13 +5,9 @@ import com.cloudlibrary.books.application.service.BookOperationUseCase;
 import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
-import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookStatusEnum;
-import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookTypeEnum;
 import com.cloudlibrary.books.ui.requestBody.BookCreateRequest;
-import com.cloudlibrary.books.ui.requestBody.BookStatusUpdateRequest;
 import com.cloudlibrary.books.ui.requestBody.BookUpdateRequest;
 import com.cloudlibrary.books.ui.view.ApiResponseView;
-import com.cloudlibrary.books.ui.view.book.BookCompositeView;
 import com.cloudlibrary.books.ui.view.book.BookView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @Api(value = "도서 API")
-@RequestMapping("/v1")
+@RequestMapping("/v1/books")
 public class BookController {
 
     private final BookReadUseCase bookReadUseCase;
@@ -38,20 +35,36 @@ public class BookController {
         this.bookOperationUseCase = bookOperationUseCase;
     }
 
-    @PostMapping("/books")
+    @GetMapping("/health-check")
+    public ResponseEntity<String> healthCheck(){
+        return ResponseEntity.ok("good");
+    }
+
+    @PostMapping("")
     @ApiOperation(value = "도서 등록")
-    public ResponseEntity<Void> createBook(@RequestBody BookCreateRequest request) {
+    public ResponseEntity<Void> createBook(@Valid @RequestBody BookCreateRequest request) {
 
         if (ObjectUtils.isEmpty(request)) {
             throw new CloudLibraryException(MessageType.BAD_REQUEST);
         }
 
         /**
-         * TODO rid만들기 library name - author - title - id조합 --> 등록할때 id없음..
+         * rid: library name - author - title
+         * TODO 고유하게 만드는 법 생각해 보기
          */
 
+        String[] ridArray = {request.getLibraryName(), request.getTitle(), request.getAuthor()};
+
+        String ridResult = "";
+
+        for (String str : ridArray) {
+            String result = str.replaceAll(" ","");
+            ridResult += result+"-";
+        }
+
+
         var command = BookOperationUseCase.BookCreateCommand.builder()
-                .rid(request.getLibraryName()+'-'+request.getTitle()+'-'+request.getAuthor())
+                .rid(ridResult.substring(0,ridResult.length()-1))
                 .isbn(request.getIsbn())
                 .title(request.getTitle())
                 .thumbNailImage(request.getThumbNailImage())
@@ -61,12 +74,12 @@ public class BookController {
                 .contents(request.getContents())
                 .publisher(request.getPublisher())
                 .publishDate(request.getPublishDate())
-                .bookType(BookTypeEnum.valueOf(request.getBookType().toUpperCase()).name())
+                .bookType(request.getBookType())
                 .genre(request.getGenre())
                 .barcode(request.getBarcode())
                 .rfid(request.getRfid())
-                .bookStatus(BookStatusEnum.valueOf(request.getBookStatus().toUpperCase()).name())
-                .categoryId(request.getCategoryId())
+                .bookStatus(request.getBookStatus())
+                .category(request.getCategory())
                 .libraryName(request.getLibraryName()).build();
 
         bookOperationUseCase.createBook(command);
@@ -74,7 +87,7 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/books")
+    @GetMapping("")
     @ApiOperation(value = "도서 목록 조회")
     public ResponseEntity<ApiResponseView<List<BookView>>> getBooksAll() {
 
@@ -83,7 +96,7 @@ public class BookController {
         return ResponseEntity.ok(new ApiResponseView<>(results.stream().map(BookView::new).collect(Collectors.toList())));
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "도서 상세 조회")
     public ResponseEntity<ApiResponseView<BookView>> getBook(@PathVariable("id") Long id) {
 
@@ -95,9 +108,9 @@ public class BookController {
     }
 
 
-    @PutMapping("/books/{id}")
+    @PutMapping("/{id}")
     @ApiOperation(value = "도서 수정")
-    public ResponseEntity<ApiResponseView<Long>> updateBook(@PathVariable("id") Long id, @RequestBody BookUpdateRequest request) {
+    public ResponseEntity<ApiResponseView<Long>> updateBook(@Valid @PathVariable("id") Long id, @Valid @RequestBody BookUpdateRequest request) {
       var command = BookOperationUseCase.BookUpdateCommand.builder()
                .id(id)
                .rid(request.getRid())
@@ -110,12 +123,12 @@ public class BookController {
                .contents(request.getContents())
                .publisher(request.getPublisher())
                .publishDate(request.getPublishDate())
-               .bookType(BookTypeEnum.valueOf(request.getBookType().toUpperCase()).name())
+               .bookType(request.getBookType())
                .genre(request.getGenre())
                .barcode(request.getBarcode())
                .rfid(request.getRfid())
-               .bookStatus(BookStatusEnum.valueOf(request.getBookStatus().toUpperCase()).name())
-               .categoryId(request.getCategoryId())
+               .bookStatus(request.getBookStatus())
+               .category(request.getCategory())
                .libraryName(request.getLibraryName()).build();
 
         var result = bookOperationUseCase.updateBook(command);
@@ -124,7 +137,7 @@ public class BookController {
     }
 
 
-    @PatchMapping("/books/{id}")
+    @PatchMapping("/{id}")
     @ApiOperation(value="도서 삭제. bookStatus를 DISCARD로 변경")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") Long id){
 
@@ -132,60 +145,5 @@ public class BookController {
 
         bookOperationUseCase.deleteBook(command);
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/composite")
-    @ApiOperation(value = "컴포짓에 도서 정보 전달")
-    public ResponseEntity<ApiResponseView<BookCompositeView>> createBookToComposite(@RequestBody BookCreateRequest request){
-//
-//        BookCompositeView mockResult = BookCompositeView.builder()
-//                .id(1L)
-//                .rid(request.getLibraryName() + "-" + request.getAuthor() + "-" + request.getTitle() + "_" + 1L)
-//                .isbn("isbnTEST1234")
-//                .title(request.getTitle())
-//                .thumbNailImage(request.getThumbNailImage())
-//                .coverImage(request.getCoverImage())
-//                .author(request.getAuthor())
-//                .translator(request.getTranslator())
-//                .publisher(request.getPublisher())
-//                .publishDate(request.getPublishDate())
-//                .type(request.getType())
-//                .genre(request.getGenre())
-//                .barcode(request.getBarcode())
-//                .rfid(request.getRfid())
-//                .bookStatus(request.getBookStatus())
-//                .category(request.getCategory())
-//                .libraryId(request.getLibraryId())
-//                .libraryName(request.getLibraryName()).build();
-
-        return null;
-    }
-
-    @PatchMapping("/composite/bookstatus/{id}")
-    @ApiOperation(value="도서 상태 변경")
-    public ResponseEntity<ApiResponseView<BookCompositeView>> updateBookStatusToComposite(@PathVariable Long id,@RequestBody BookStatusUpdateRequest request){
-
-//        BookCompositeView mockResult = BookCompositeView.builder()
-//                .id(id)
-//                .rid("도서관명-작가-책이름" + 1L)
-//                .isbn("isbnTEST1234")
-//                .title("책이름")
-//                .thumbNailImage("썸네일 이미지")
-//                .coverImage("커버이미지")
-//                .author("저자")
-//                .translator("번역가")
-//                .publisher("출판사")
-//                .publishDate(LocalDate.of(2022,05,02))
-//                .type("비도서")
-//                .genre("장르")
-//                .barcode("바코드123")
-//                .rfid("rfid1234")
-//                .bookStatus(request.getBookStatus())
-//                .category(100L)
-//                .libraryId(1L)
-//                .libraryName("도서관이름").build();
-
-        return null;
-
     }
 }

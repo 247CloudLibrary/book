@@ -25,6 +25,7 @@ public interface BookReadUseCase {
         }
     }
 
+
     @Builder
     @Getter
     @ToString
@@ -46,9 +47,7 @@ public interface BookReadUseCase {
         private final String rfid;
         private final String bookStatus;
         private final String libraryName;
-        private final Long categoryId;
-        private final Long codeNum;
-        private final String codeName;
+        private final String category;
 
         public static FindBookResult findByBook(Book book) {
             return FindBookResult.builder()
@@ -62,15 +61,14 @@ public interface BookReadUseCase {
                     .translator(book.getTranslator())
                     .contents(book.getContents())
                     .publisher(book.getPublisher())
+                    .publishDate(book.getPublishDate())
                     .bookType(book.getBookType())
                     .genre(book.getGenre())
                     .barcode(book.getBarcode())
                     .rfid(book.getRfid())
                     .bookStatus(book.getBookStatus())
                     .libraryName(book.getLibraryName())
-                    .categoryId(book.getCategoryId())
-                    .codeNum(book.getCodeNum())
-                    .codeName(book.getCodeName())
+                    .category(book.getCategory())
                     .build();
         }
     }

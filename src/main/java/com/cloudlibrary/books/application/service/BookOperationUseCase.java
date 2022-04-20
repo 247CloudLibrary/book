@@ -1,5 +1,6 @@
 package com.cloudlibrary.books.application.service;
 
+import com.cloudlibrary.books.application.domain.BookType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public interface BookOperationUseCase {
         private String barcode;
         private String rfid;
         private String bookStatus;
-        private Long categoryId;
+        private String category;
         private String libraryName;
 
     }
@@ -58,7 +59,7 @@ public interface BookOperationUseCase {
         private String barcode;
         private String rfid;
         private String bookStatus;
-        private Long categoryId;
+        private String category;
         private String libraryName;
 
     }

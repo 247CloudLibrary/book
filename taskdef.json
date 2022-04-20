@@ -1,0 +1,21 @@
+{
+  "executionRoleArn": "arn:aws:iam::844148244640:role/ECSTaskExecutionRole",
+  "containerDefinitions": [{
+    "name": "book-container",
+    "image": "844148244640.dkr.ecr.us-east-1.amazonaws.com/bookapp",
+
+    "essential": true,
+    "portMappings": [{
+      "hostPort": 0,
+      "protocol": "tcp",
+      "containerPort": 8080
+    }]
+  }],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "networkMode": "bridge",
+  "cpu": "512",
+  "memory": "400",
+  "family": "book-task"
+}
