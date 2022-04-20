@@ -94,7 +94,7 @@ public class BookEntity extends BaseTimeEntity {
                 .rfid(this.rfid)
                 .bookStatus(this.bookStatus.getStatus())
                 .libraryName(this.libraryName)
-                .category(Category.CodeAndValue(this.category))
+                .category(this.category.getValue())
                 .createdAt(super.getCreatedAt())
                 .updatedAt(super.getUpdatedAt())
                 .build();
