@@ -3,11 +3,9 @@ spring:
     active: local
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://book-db.cscg6f0frodu.us-east-1.rds.amazonaws.com:3306/book
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: root
-      password: qwer1234
-
+      jdbc-url: cloudlibrary/rds/book/mysql
+      driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver
+      username: cloudlibrary/rds/book/mysql
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
