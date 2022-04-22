@@ -34,10 +34,10 @@ public class BookView {
     @ApiModelProperty(value = "출판사")
     private final String publisher;
     @ApiModelProperty(value="출판일자")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final LocalDate publishDate;
     @ApiModelProperty(value="자료 종류")
-    private final String type;
+    private final String bookType;
     @ApiModelProperty(value="도서 장르")
     private final String genre;
     @ApiModelProperty(value="도서 바코드")
@@ -48,6 +48,8 @@ public class BookView {
     private final String bookStatus;
     @ApiModelProperty(value="한국십진분류표 카테고리")
     private final String category;
+    @ApiModelProperty(value="도서관 id")
+    private final Long libraryId;
     @ApiModelProperty(value="도서관 이름")
     private final String libraryName;
 
@@ -64,12 +66,13 @@ public class BookView {
         this.contents = result.getContents();
         this.publisher = result.getPublisher();
         this.publishDate = result.getPublishDate();
-        this.type = result.getBookType();
+        this.bookType = result.getBookType();
         this.genre = result.getGenre();
         this.barcode = result.getBarcode();
         this.rfid = result.getRfid();
         this.bookStatus = result.getBookStatus();
         this.category = result.getCategory();
+        this.libraryId = result.getLibraryId();
         this.libraryName = result.getLibraryName();
 
     }

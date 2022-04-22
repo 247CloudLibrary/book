@@ -46,6 +46,7 @@ public interface BookReadUseCase {
         private final String barcode;
         private final String rfid;
         private final String bookStatus;
+        private final Long libraryId;
         private final String libraryName;
         private final String category;
 
@@ -67,6 +68,7 @@ public interface BookReadUseCase {
                     .barcode(book.getBarcode())
                     .rfid(book.getRfid())
                     .bookStatus(book.getBookStatus())
+                    .libraryId(book.getLibraryId())
                     .libraryName(book.getLibraryName())
                     .category(book.getCategory())
                     .build();
