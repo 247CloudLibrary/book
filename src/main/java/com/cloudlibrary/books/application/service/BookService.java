@@ -50,6 +50,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
                 .rfid(command.getRfid())
                 .bookStatus(command.getBookStatus())
                 .category(command.getCategory())
+                .libraryId(command.getLibraryId())
                 .libraryName(command.getLibraryName())
                 .build();
 
@@ -70,7 +71,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     @Transactional
     public  OperationBookResult updateBook(BookUpdateCommand command) {
 
-        BookEntity findBookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
+        BookEntity findBookEntity = bookEntityRepository.findByIdAndLibraryId(command.getId(),command.getLibraryId()).stream().findAny()
                 .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
 
         Book updateBook =  Book.builder()
@@ -91,6 +92,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
                 .rfid(command.getRfid())
                 .bookStatus(command.getBookStatus())
                 .category(command.getCategory())
+                .libraryId(command.getLibraryId())
                 .libraryName(command.getLibraryName())
                 .build();
 
@@ -125,8 +127,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         return FindBookResult.findByBook(result.get().toBook());
 
     }
-
-
 
     @Override
     @Transactional

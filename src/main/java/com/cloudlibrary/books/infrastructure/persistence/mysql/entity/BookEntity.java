@@ -68,6 +68,9 @@ public class BookEntity extends BaseTimeEntity {
     private BookStatus bookStatus;
 
     @Column(nullable = false)
+    private Long libraryId;
+
+    @Column(nullable = false)
     private String libraryName;
 
     @Enumerated(EnumType.STRING)
@@ -94,6 +97,7 @@ public class BookEntity extends BaseTimeEntity {
                 .rfid(this.rfid)
                 .bookStatus(this.bookStatus.getStatus())
                 .libraryName(this.libraryName)
+                .libraryId(this.libraryId)
                 .category(this.category.getValue())
                 .createdAt(super.getCreatedAt())
                 .updatedAt(super.getUpdatedAt())
@@ -118,6 +122,7 @@ public class BookEntity extends BaseTimeEntity {
         this.rfid = book.getRfid();
         this.category = Category.findCategory(book.getCategory());
         this.bookStatus = BookStatus.find(book.getBookStatus());
+        this.libraryId = book.getLibraryId();
         this.libraryName = book.getLibraryName();
     }
 
@@ -142,6 +147,7 @@ public class BookEntity extends BaseTimeEntity {
         this.rfid = book.getRfid();
         this.category = Category.findCategory(book.getCategory());
         this.bookStatus = BookStatus.find(book.getBookStatus());
+        this.libraryId = book.getLibraryId();
         this.libraryName = book.getLibraryName();
 
     }

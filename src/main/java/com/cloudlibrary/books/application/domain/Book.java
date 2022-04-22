@@ -30,6 +30,7 @@ public class Book {
     private final String barcode;
     private final String rfid;
     private final String bookStatus;
+    private final Long libraryId;
     private final String libraryName;
     private final String category;
     private final LocalDateTime createdAt;

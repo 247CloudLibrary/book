@@ -84,6 +84,7 @@ public class BookController {
                 .rfid(request.getRfid())
                 .bookStatus(request.getBookStatus())
                 .category(request.getCategory())
+                .libraryId(request.getLibraryId())
                 .libraryName(request.getLibraryName()).build();
 
         var saveResult = bookOperationUseCase.createBook(command);
@@ -113,6 +114,7 @@ public class BookController {
                .rfid(request.getRfid())
                .bookStatus(request.getBookStatus())
                .category(request.getCategory())
+              .libraryId(request.getLibraryId())
                .libraryName(request.getLibraryName()).build();
 
         bookOperationUseCase.updateBook(command);
