@@ -1,6 +1,6 @@
 package com.cloudlibrary.books.application.service;
 
-import com.cloudlibrary.books.application.domain.BookType;
+import com.cloudlibrary.books.application.domain.Book;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,7 +10,8 @@ import java.time.LocalDate;
 
 public interface BookOperationUseCase {
     void createBook(BookCreateCommand command);
-    Long updateBook(BookUpdateCommand command);
+    void updateBook(BookUpdateCommand command);
+    void updateBookStatus(BookUpdateStatusCommand command);
     void deleteBook(BookDeleteCommand command);
 
     @EqualsAndHashCode(callSuper = false)
@@ -34,6 +35,7 @@ public interface BookOperationUseCase {
         private String rfid;
         private String bookStatus;
         private String category;
+        private Long libraryId;
         private String libraryName;
 
     }
@@ -60,6 +62,7 @@ public interface BookOperationUseCase {
         private String rfid;
         private String bookStatus;
         private String category;
+        private Long libraryId;
         private String libraryName;
 
     }
@@ -71,4 +74,14 @@ public interface BookOperationUseCase {
     class BookDeleteCommand{
         private Long id;
     }
+
+    @EqualsAndHashCode(callSuper = false)
+    @Builder
+    @Getter
+    @ToString
+    class BookUpdateStatusCommand {
+        private Long id;
+        private String bookStatus;
+    }
+
 }

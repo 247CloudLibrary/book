@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
@@ -41,6 +43,8 @@ public class BookCreateRequest {
     private String bookStatus;
     @NotEmpty(message = "카테고리는 필수입니다")
     private String category;
+    @NotNull(message ="도서관 id는 필수입니다")
+    private Long libraryId;
     @NotEmpty(message = "도서관 이름은 필수입니다")
     private String libraryName;
 

@@ -20,4 +20,7 @@ public interface BookEntityRepository extends JpaRepository<BookEntity,Long> {
     List<BookEntity> findAllBookByBookStatusNot(BookStatus status);
 
    Optional<BookEntity> findByIdAndBookStatusNot(Long bookId, BookStatus status);
+
+    Optional<BookEntity> findByIdAndLibraryId(Long id, Long libraryId);
 }
+

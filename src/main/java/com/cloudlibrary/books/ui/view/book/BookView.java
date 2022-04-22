@@ -48,6 +48,8 @@ public class BookView {
     private final String bookStatus;
     @ApiModelProperty(value="한국십진분류표 카테고리")
     private final String category;
+    @ApiModelProperty(value="도서관 id")
+    private final Long libraryId;
     @ApiModelProperty(value="도서관 이름")
     private final String libraryName;
 
@@ -70,6 +72,7 @@ public class BookView {
         this.rfid = result.getRfid();
         this.bookStatus = result.getBookStatus();
         this.category = result.getCategory();
+        this.libraryId = result.getLibraryId();
         this.libraryName = result.getLibraryName();
 
     }

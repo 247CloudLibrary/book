@@ -68,6 +68,9 @@ public class BookEntity extends BaseTimeEntity {
     private BookStatus bookStatus;
 
     @Column(nullable = false)
+    private Long libraryId;
+
+    @Column(nullable = false)
     private String libraryName;
 
     @Enumerated(EnumType.STRING)
@@ -93,6 +96,7 @@ public class BookEntity extends BaseTimeEntity {
                 .barcode(this.barcode)
                 .rfid(this.rfid)
                 .bookStatus(this.bookStatus.getStatus())
+                .libraryId(this.libraryId)
                 .libraryName(this.libraryName)
                 .category(this.category.getValue())
                 .createdAt(super.getCreatedAt())
@@ -118,6 +122,7 @@ public class BookEntity extends BaseTimeEntity {
         this.rfid = book.getRfid();
         this.category = Category.findCategory(book.getCategory());
         this.bookStatus = BookStatus.find(book.getBookStatus());
+        this.libraryId = book.getLibraryId();
         this.libraryName = book.getLibraryName();
     }
 
@@ -142,6 +147,7 @@ public class BookEntity extends BaseTimeEntity {
         this.rfid = book.getRfid();
         this.category = Category.findCategory(book.getCategory());
         this.bookStatus = BookStatus.find(book.getBookStatus());
+        this.libraryId = book.getLibraryId();
         this.libraryName = book.getLibraryName();
 
     }
@@ -152,5 +158,13 @@ public class BookEntity extends BaseTimeEntity {
 
     public void changeStatus(BookStatus status) {
         this.bookStatus = status;
+    }
+
+    /**
+     * 도서 상태 변경
+     */
+    public void updateBookStatus(Long id, String status) {
+        this.id = id;
+        this.bookStatus = BookStatus.find(status);
     }
 }
