@@ -31,12 +31,11 @@ public class BookController {
 
     private final BookReadUseCase bookReadUseCase;
     private final BookOperationUseCase bookOperationUseCase;
-    private final FeignCompositeService feignCompositeService;
 
     public BookController(BookReadUseCase bookReadUseCase, BookOperationUseCase bookOperationUseCase, FeignCompositeService feignCompositeService) {
         this.bookReadUseCase = bookReadUseCase;
         this.bookOperationUseCase = bookOperationUseCase;
-        this.feignCompositeService = feignCompositeService;
+
     }
 
     @GetMapping("/health-check")
@@ -87,7 +86,7 @@ public class BookController {
                 .libraryId(request.getLibraryId())
                 .libraryName(request.getLibraryName()).build();
 
-        var saveResult = bookOperationUseCase.createBook(command);
+      bookOperationUseCase.createBook(command);
 
         return ResponseEntity.ok().build();
     }
