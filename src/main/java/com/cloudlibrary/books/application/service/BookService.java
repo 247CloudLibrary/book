@@ -6,6 +6,9 @@ import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
+import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeBookStatusRequest;
+import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeRequest;
+import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +22,21 @@ import java.util.stream.Collectors;
 public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     private final BookEntityRepository bookEntityRepository;
+    private final FeignCompositeService feignCompositeService;
 
 
 
-    public BookService(BookEntityRepository bookEntityRepository) {
+    public BookService(BookEntityRepository bookEntityRepository, FeignCompositeService feignCompositeService) {
         this.bookEntityRepository = bookEntityRepository;
 
+        this.feignCompositeService = feignCompositeService;
     }
 
 
 
     @Override
     @Transactional
-    public OperationBookResult createBook(BookCreateCommand command) {
+    public void createBook(BookCreateCommand command) {
 
         Book book =  Book.builder()
                 .rid(command.getRid())
@@ -56,9 +61,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
         BookEntity saveBook = bookEntityRepository.save(new BookEntity(book));
 
-
-
-      return OperationBookResult.requestBook(saveBook.toBook());
+        feignCompositeService.requestCompositeBook(new CompositeRequest(saveBook.toBook()));
 
     }
 
@@ -69,12 +72,12 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
      */
     @Override
     @Transactional
-    public  OperationBookResult updateBook(BookUpdateCommand command) {
+    public  void updateBook(BookUpdateCommand command) {
 
         BookEntity findBookEntity = bookEntityRepository.findByIdAndLibraryId(command.getId(),command.getLibraryId()).stream().findAny()
                 .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
 
-        Book updateBook =  Book.builder()
+        Book book =  Book.builder()
                 .id(command.getId())
                 .rid(command.getRid())
                 .isbn(command.getIsbn())
@@ -96,9 +99,9 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
                 .libraryName(command.getLibraryName())
                 .build();
 
-       findBookEntity.update(updateBook);
+        findBookEntity.update(book);
+        feignCompositeService.requestCompositeBook(new CompositeRequest(book));
 
-        return OperationBookResult.requestBook(findBookEntity.toBook());
     }
 
     @Override
@@ -130,14 +133,16 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     @Override
     @Transactional
-    public OperationBookResult updateBookStatus(BookUpdateStatusCommand command) {
+    public void updateBookStatus(BookUpdateStatusCommand command) {
 
         BookEntity bookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
                 .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
 
         bookEntity.updateBookStatus(command.getId(),command.getBookStatus());
 
-        return OperationBookResult.requestBook(bookEntity.toBook());
+        CompositeBookStatusRequest requst = new CompositeBookStatusRequest(bookEntity.toBook());
+
+
     }
 
     @Override
