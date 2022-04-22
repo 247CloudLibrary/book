@@ -1,12 +1,15 @@
 package com.cloudlibrary.books.ui.controller;
 
 
+import com.cloudlibrary.books.application.domain.Book;
 import com.cloudlibrary.books.application.service.BookOperationUseCase;
 import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
-import com.cloudlibrary.books.ui.requestBody.BookCreateRequest;
-import com.cloudlibrary.books.ui.requestBody.BookUpdateRequest;
+import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
+import com.cloudlibrary.books.ui.view.requestBody.BookCreateRequest;
+import com.cloudlibrary.books.ui.view.requestBody.BookStatusUpdateRequest;
+import com.cloudlibrary.books.ui.view.requestBody.BookUpdateRequest;
 import com.cloudlibrary.books.ui.view.ApiResponseView;
 import com.cloudlibrary.books.ui.view.book.BookView;
 import io.swagger.annotations.Api;
@@ -29,10 +32,12 @@ public class BookController {
 
     private final BookReadUseCase bookReadUseCase;
     private final BookOperationUseCase bookOperationUseCase;
+    private final FeignCompositeService feignCompositeService;
 
-    public BookController(BookReadUseCase bookReadUseCase, BookOperationUseCase bookOperationUseCase) {
+    public BookController(BookReadUseCase bookReadUseCase, BookOperationUseCase bookOperationUseCase, FeignCompositeService feignCompositeService) {
         this.bookReadUseCase = bookReadUseCase;
         this.bookOperationUseCase = bookOperationUseCase;
+        this.feignCompositeService = feignCompositeService;
     }
 
     @GetMapping("/health-check")
@@ -82,29 +87,9 @@ public class BookController {
                 .category(request.getCategory())
                 .libraryName(request.getLibraryName()).build();
 
-        bookOperationUseCase.createBook(command);
+        var saveResult = bookOperationUseCase.createBook(command);
 
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("")
-    @ApiOperation(value = "도서 목록 조회")
-    public ResponseEntity<ApiResponseView<List<BookView>>> getBooksAll() {
-
-        var results = bookReadUseCase.getBookAllList();
-
-        return ResponseEntity.ok(new ApiResponseView<>(results.stream().map(BookView::new).collect(Collectors.toList())));
-    }
-
-    @GetMapping("/{id}")
-    @ApiOperation(value = "도서 상세 조회")
-    public ResponseEntity<ApiResponseView<BookView>> getBook(@PathVariable("id") Long id) {
-
-        var query = new BookReadUseCase.BookFindQuery(id);
-
-        var result = bookReadUseCase.getBook(query);
-
-        return ResponseEntity.ok(new ApiResponseView<>(new BookView(result)));
     }
 
 
@@ -131,11 +116,44 @@ public class BookController {
                .category(request.getCategory())
                .libraryName(request.getLibraryName()).build();
 
-        var result = bookOperationUseCase.updateBook(command);
+        bookOperationUseCase.updateBook(command);
 
-        return ResponseEntity.ok(new ApiResponseView<>(result));
+
+
+        return ResponseEntity.ok().build();
     }
 
+    @GetMapping("")
+    @ApiOperation(value = "도서 목록 조회")
+    public ResponseEntity<ApiResponseView<List<BookView>>> getBooksAll() {
+
+        var results = bookReadUseCase.getBookAllList();
+
+        return ResponseEntity.ok(new ApiResponseView<>(results.stream().map(BookView::new).collect(Collectors.toList())));
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "도서 상세 조회")
+    public ResponseEntity<ApiResponseView<BookView>> getBook(@PathVariable("id") Long id) {
+
+        var query = new BookReadUseCase.BookFindQuery(id);
+
+        var result = bookReadUseCase.getBook(query);
+
+        return ResponseEntity.ok(new ApiResponseView<>(new BookView(result)));
+    }
+
+    @PatchMapping("/bookstatus/{id}")
+    @ApiOperation(value = "도서 상태 변경")
+    public ResponseEntity<Void> updateBookStatus(@PathVariable("id") Long id, @Valid @RequestBody BookStatusUpdateRequest request) {
+
+        var command = BookOperationUseCase.BookUpdateStatusCommand.builder()
+                .id(id).bookStatus(request.getBookStatus()).build();
+
+        bookOperationUseCase.updateBookStatus(command);
+
+        return ResponseEntity.ok().build();
+    }
 
     @PatchMapping("/{id}")
     @ApiOperation(value="도서 삭제. bookStatus를 DISCARD로 변경")

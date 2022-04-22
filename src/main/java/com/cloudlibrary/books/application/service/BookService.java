@@ -21,6 +21,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     private final BookEntityRepository bookEntityRepository;
 
 
+
     public BookService(BookEntityRepository bookEntityRepository) {
         this.bookEntityRepository = bookEntityRepository;
 
@@ -30,7 +31,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     @Override
     @Transactional
-    public void createBook(BookCreateCommand command) {
+    public OperationBookResult createBook(BookCreateCommand command) {
 
         Book book =  Book.builder()
                 .rid(command.getRid())
@@ -52,18 +53,22 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
                 .libraryName(command.getLibraryName())
                 .build();
 
-        BookEntity save = bookEntityRepository.save(new BookEntity(book));
-        //TODO Composite에 보내기
+        BookEntity saveBook = bookEntityRepository.save(new BookEntity(book));
+
+
+
+      return OperationBookResult.requestBook(saveBook.toBook());
 
     }
 
     /**
      * findBookEntity.update => 도서 수정
      *
+     * @return
      */
     @Override
     @Transactional
-    public Long updateBook(BookUpdateCommand command) {
+    public  OperationBookResult updateBook(BookUpdateCommand command) {
 
         BookEntity findBookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
                 .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
@@ -91,10 +96,7 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
        findBookEntity.update(updateBook);
 
-        //TODO 수정한 데이터 Composite에 보내기
-        Book result = findBookEntity.toBook();
-
-        return result.getId();
+        return OperationBookResult.requestBook(findBookEntity.toBook());
     }
 
     @Override
@@ -109,12 +111,11 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     }
 
-
-
     @Override
     @Transactional(readOnly = true)
     public FindBookResult getBook(BookFindQuery query) {
-        Optional<BookEntity> result= bookEntityRepository.findByIdAndBookStatusNot(query.getBookId(),BookStatus.DISCARD).stream().findAny();
+        Optional<BookEntity> result= bookEntityRepository.findByIdAndBookStatusNot(query.getBookId(),BookStatus.DISCARD)
+                                    .stream().findAny();
 
         if (result.isEmpty()) {
             throw new CloudLibraryException(MessageType.NOT_FOUND);
@@ -123,6 +124,20 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
         return FindBookResult.findByBook(result.get().toBook());
 
+    }
+
+
+
+    @Override
+    @Transactional
+    public OperationBookResult updateBookStatus(BookUpdateStatusCommand command) {
+
+        BookEntity bookEntity = bookEntityRepository.findById(command.getId()).stream().findAny()
+                .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
+
+        bookEntity.updateBookStatus(command.getId(),command.getBookStatus());
+
+        return OperationBookResult.requestBook(bookEntity.toBook());
     }
 
     @Override

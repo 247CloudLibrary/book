@@ -153,4 +153,12 @@ public class BookEntity extends BaseTimeEntity {
     public void changeStatus(BookStatus status) {
         this.bookStatus = status;
     }
+
+    /**
+     * 도서 상태 변경
+     */
+    public void updateBookStatus(Long id, String status) {
+        this.id = id;
+        this.bookStatus = BookStatus.find(status);
+    }
 }
