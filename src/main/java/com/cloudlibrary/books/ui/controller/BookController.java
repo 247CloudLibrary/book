@@ -1,15 +1,14 @@
 package com.cloudlibrary.books.ui.controller;
 
 
-import com.cloudlibrary.books.application.domain.Book;
 import com.cloudlibrary.books.application.service.BookOperationUseCase;
 import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
-import com.cloudlibrary.books.ui.view.requestBody.BookCreateRequest;
-import com.cloudlibrary.books.ui.view.requestBody.BookStatusUpdateRequest;
-import com.cloudlibrary.books.ui.view.requestBody.BookUpdateRequest;
+import com.cloudlibrary.books.ui.requestBody.BookCreateRequest;
+import com.cloudlibrary.books.ui.requestBody.BookStatusUpdateRequest;
+import com.cloudlibrary.books.ui.requestBody.BookUpdateRequest;
 import com.cloudlibrary.books.ui.view.ApiResponseView;
 import com.cloudlibrary.books.ui.view.book.BookView;
 import io.swagger.annotations.Api;
