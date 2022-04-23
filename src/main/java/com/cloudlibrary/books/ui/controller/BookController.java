@@ -5,7 +5,6 @@ import com.cloudlibrary.books.application.service.BookOperationUseCase;
 import com.cloudlibrary.books.application.service.BookReadUseCase;
 import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
-import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
 import com.cloudlibrary.books.ui.requestBody.BookCreateRequest;
 import com.cloudlibrary.books.ui.requestBody.BookStatusUpdateRequest;
 import com.cloudlibrary.books.ui.requestBody.BookUpdateRequest;
@@ -32,7 +31,7 @@ public class BookController {
     private final BookReadUseCase bookReadUseCase;
     private final BookOperationUseCase bookOperationUseCase;
 
-    public BookController(BookReadUseCase bookReadUseCase, BookOperationUseCase bookOperationUseCase, FeignCompositeService feignCompositeService) {
+    public BookController(BookReadUseCase bookReadUseCase, BookOperationUseCase bookOperationUseCase) {
         this.bookReadUseCase = bookReadUseCase;
         this.bookOperationUseCase = bookOperationUseCase;
 
@@ -95,6 +94,11 @@ public class BookController {
     @PutMapping("/{id}")
     @ApiOperation(value = "도서 수정")
     public ResponseEntity<ApiResponseView<Long>> updateBook(@Valid @PathVariable("id") Long id, @Valid @RequestBody BookUpdateRequest request) {
+
+        if (ObjectUtils.isEmpty(request)) {
+            throw new CloudLibraryException(MessageType.BAD_REQUEST);
+        }
+
       var command = BookOperationUseCase.BookUpdateCommand.builder()
                .id(id)
                .rid(request.getRid())
@@ -146,6 +150,10 @@ public class BookController {
     @PatchMapping("/bookstatus/{id}")
     @ApiOperation(value = "도서 상태 변경")
     public ResponseEntity<Void> updateBookStatus(@PathVariable("id") Long id, @Valid @RequestBody BookStatusUpdateRequest request) {
+
+        if (ObjectUtils.isEmpty(request)) {
+            throw new CloudLibraryException(MessageType.BAD_REQUEST);
+        }
 
         var command = BookOperationUseCase.BookUpdateStatusCommand.builder()
                 .id(id).bookStatus(request.getBookStatus()).build();
