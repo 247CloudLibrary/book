@@ -65,6 +65,30 @@ public interface BookOperationUseCase {
         private Long libraryId;
         private String libraryName;
 
+        public static Book toBook(BookUpdateCommand command){
+            return Book.builder()
+                    .id(command.getId())
+                    .rid(command.getRid())
+                    .isbn(command.getIsbn())
+                    .title(command.getTitle())
+                    .thumbNailImage(command.getThumbNailImage())
+                    .coverImage(command.getCoverImage())
+                    .author(command.getAuthor())
+                    .translator(command.getTranslator())
+                    .contents(command.getContents())
+                    .publisher(command.getPublisher())
+                    .publishDate(command.getPublishDate())
+                    .bookType(command.getBookType())
+                    .genre(command.getGenre())
+                    .barcode(command.getBarcode())
+                    .rfid(command.getRfid())
+                    .bookStatus(command.getBookStatus())
+                    .category(command.getCategory())
+                    .libraryId(command.getLibraryId())
+                    .libraryName(command.getLibraryName())
+                    .build();
+        }
+
     }
 
     @EqualsAndHashCode(callSuper = false)
