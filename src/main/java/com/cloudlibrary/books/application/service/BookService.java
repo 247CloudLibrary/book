@@ -6,7 +6,6 @@ import com.cloudlibrary.books.exception.CloudLibraryException;
 import com.cloudlibrary.books.exception.MessageType;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.entity.BookEntity;
 import com.cloudlibrary.books.infrastructure.persistence.mysql.repository.BookEntityRepository;
-import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeBookStatusRequest;
 import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeRequest;
 import com.cloudlibrary.books.infrastructure.query.http.feign.service.FeignCompositeService;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +66,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     /**
      * findBookEntity.update => 도서 수정
-     *
-     * @return
      */
     @Override
     @Transactional
@@ -140,7 +137,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
         bookEntity.updateBookStatus(command.getId(),command.getBookStatus());
 
-        CompositeBookStatusRequest requst = new CompositeBookStatusRequest(bookEntity.toBook());
 
 
     }
