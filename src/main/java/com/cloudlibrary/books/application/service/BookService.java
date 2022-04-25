@@ -102,7 +102,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
 
         List<Book> findAllBook = bookEntityRepository.findAllBookByBookStatusNot(BookStatus.DISCARD)
@@ -114,7 +113,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public FindBookResult getBook(BookFindQuery query) {
         Optional<BookEntity> result= bookEntityRepository.findByIdAndBookStatusNot(query.getBookId(),BookStatus.DISCARD)
                                     .stream().findAny();
