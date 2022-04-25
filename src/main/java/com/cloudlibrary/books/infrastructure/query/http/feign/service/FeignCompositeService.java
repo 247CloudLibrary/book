@@ -2,7 +2,6 @@ package com.cloudlibrary.books.infrastructure.query.http.feign.service;
 
 
 import com.cloudlibrary.books.infrastructure.query.http.feign.client.CompositeRequestClient;
-import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeBookStatusRequest;
 import com.cloudlibrary.books.infrastructure.query.http.feign.requestBody.CompositeRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,5 @@ public class FeignCompositeService {
     public void requestCompositeBook(CompositeRequest request) {
          compositeRequestClient.requestBookPost(request);
     }
-
 
 }
