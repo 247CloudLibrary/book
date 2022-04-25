@@ -64,9 +64,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
 
     }
 
-    /**
-     * findBookEntity.update => 도서 수정
-     */
     @Override
     @Transactional
     public  void updateBook(BookUpdateCommand command) {
@@ -74,35 +71,15 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
         BookEntity findBookEntity = bookEntityRepository.findByIdAndLibraryId(command.getId(),command.getLibraryId()).stream().findAny()
                 .orElseThrow(() -> new CloudLibraryException(MessageType.NOT_FOUND));
 
-        Book book =  Book.builder()
-                .id(command.getId())
-                .rid(command.getRid())
-                .isbn(command.getIsbn())
-                .title(command.getTitle())
-                .thumbNailImage(command.getThumbNailImage())
-                .coverImage(command.getCoverImage())
-                .author(command.getAuthor())
-                .translator(command.getTranslator())
-                .contents(command.getContents())
-                .publisher(command.getPublisher())
-                .publishDate(command.getPublishDate())
-                .bookType(command.getBookType())
-                .genre(command.getGenre())
-                .barcode(command.getBarcode())
-                .rfid(command.getRfid())
-                .bookStatus(command.getBookStatus())
-                .category(command.getCategory())
-                .libraryId(command.getLibraryId())
-                .libraryName(command.getLibraryName())
-                .build();
+        Book updateBook = BookUpdateCommand.toBook(command);
 
-        findBookEntity.update(book);
-        feignCompositeService.requestCompositeBook(new CompositeRequest(book));
+        bookEntityRepository.save(new BookEntity(updateBook));
+
+        feignCompositeService.requestCompositeBook(new CompositeRequest(updateBook));
 
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<FindBookResult> getBookAllList() {
 
         List<Book> findAllBook = bookEntityRepository.findAllBookByBookStatusNot(BookStatus.DISCARD)
@@ -114,7 +91,6 @@ public class BookService implements BookReadUseCase,BookOperationUseCase {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public FindBookResult getBook(BookFindQuery query) {
         Optional<BookEntity> result= bookEntityRepository.findByIdAndBookStatusNot(query.getBookId(),BookStatus.DISCARD)
                                     .stream().findAny();

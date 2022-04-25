@@ -127,32 +127,6 @@ public class BookEntity extends BaseTimeEntity {
     }
 
     /**
-     * 도서 수정
-     */
-    public void update(Book book) {
-        this.id = book.getId();
-        this.rid = book.getRid();
-        this.isbn =book.getIsbn();
-        this.title= book.getTitle();
-        this.thumbNailImage=book.getThumbNailImage();
-        this.coverImage = book.getCoverImage();
-        this.author = book.getAuthor();
-        this.translator = book.getTranslator();
-        this.contents = book.getContents();
-        this.publisher = book.getPublisher();
-        this.publishDate = book.getPublishDate();
-        this.bookType = BookType.find(book.getBookType());
-        this.genre = BookGenre.find(book.getGenre());
-        this.barcode = book.getBarcode();
-        this.rfid = book.getRfid();
-        this.category = Category.findCategory(book.getCategory());
-        this.bookStatus = BookStatus.find(book.getBookStatus());
-        this.libraryId = book.getLibraryId();
-        this.libraryName = book.getLibraryName();
-
-    }
-
-    /**
      * 도서 삭제
      */
 
