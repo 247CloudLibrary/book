@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,7 +44,7 @@ public class BookController {
 
     @PostMapping("")
     @ApiOperation(value = "도서 등록")
-    public ResponseEntity<Void> createBook(@Valid @RequestBody BookCreateRequest request, MultipartFile file) {
+    public ResponseEntity<Void> createBook(@Valid @RequestBody BookCreateRequest request) {
 
         if (ObjectUtils.isEmpty(request)) {
             throw new CloudLibraryException(MessageType.BAD_REQUEST);
