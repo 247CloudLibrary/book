@@ -28,6 +28,10 @@ logging:
     root: info
     com.cloudlibrary.books: debug
 
+jwt:
+  header: Authorization
+  secret: usertokensecretcloudlibraryhhjsisywsyjsdkyjfightingkoreausertokensecretcloudlibraryhhjsisywsyjsdkyjfightingkorea
+  token-validity-in-seconds: 86400000
 ---
 spring:
   application:
