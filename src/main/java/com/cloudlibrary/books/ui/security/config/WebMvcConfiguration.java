@@ -21,5 +21,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/v1/books/health-check");
 
 
+
     }
 }
