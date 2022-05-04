@@ -35,8 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/v1/books/health-check").permitAll()
-                .antMatchers("/v1/books").permitAll();
+                .antMatchers("/v1/books/health-check").permitAll();
 
 
         http
